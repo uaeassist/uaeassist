@@ -374,7 +374,47 @@ footer strong{color:var(--white)}
 
 <script>
 // ─── STATE ────────────────────────────────────────────────────────────────────
-let API_KEY = 'AIzaSyD4BhwiH-v-bcfklp8FQC2ftzOr-d6E2eE';
+// ─── ROTATING API KEYS (Groq) ─────────────────────────────────────────────────
+// Add all your Groq keys here. Site auto-rotates when one hits its limit.
+// Get free keys at console.groq.com — no credit card needed.
+const GROQ_KEYS = [
+  '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', // Key 1
+  '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', // Key 2
+  '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', // Key 3
+  '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', // Key 4
+  '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', // Key 5
+];
+
+// Track which keys are exhausted today
+const KEY_STATUS = JSON.parse(localStorage.getItem('groq_key_status') || '{}');
+const TODAY = new Date().toDateString();
+
+// Reset exhausted keys daily
+if (KEY_STATUS.date !== TODAY) {
+  Object.keys(KEY_STATUS).forEach(k => { if(k !== 'date') delete KEY_STATUS[k]; });
+  KEY_STATUS.date = TODAY;
+  localStorage.setItem('groq_key_status', JSON.stringify(KEY_STATUS));
+}
+
+let currentKeyIndex = 0;
+
+function getActiveKey() {
+  // Find first non-exhausted key
+  for (let i = 0; i < GROQ_KEYS.length; i++) {
+    const idx = (currentKeyIndex + i) % GROQ_KEYS.length;
+    if (!KEY_STATUS[idx]) return { key: GROQ_KEYS[idx], idx };
+  }
+  return null; // All keys exhausted
+}
+
+function markKeyExhausted(idx) {
+  KEY_STATUS[idx] = true;
+  localStorage.setItem('groq_key_status', JSON.stringify(KEY_STATUS));
+  currentKeyIndex = (idx + 1) % GROQ_KEYS.length;
+  console.log(`Key ${idx+1} exhausted, rotating to key ${currentKeyIndex+1}`);
+}
+
+let API_KEY = GROQ_KEYS[0]; // kept for compatibility
 let currentTool = null, answers = {}, currentQ = 0;
 let chatHistory = [], toolSystemPrompt = '';
 let reportContent = '';
@@ -887,50 +927,67 @@ function renderChat() {
 
 async function callAI(userMsg, isFirst=false) {
   chatHistory.push({role:'user', content:userMsg});
-  try {
-    // Build Gemini contents array — inject system prompt as first user/model turn
-    const geminiContents = [
-      {role:'user', parts:[{text: toolSystemPrompt + '\n\nUnderstood. I am ready to help UAE residents with expert, specific, law-referenced guidance. Please share the user\'s details.'}]},
-      {role:'model', parts:[{text:'Understood. I am a UAE expert assistant. Please provide the user\'s details and I will generate a comprehensive, personalised report with specific numbers, UAE law references, and actionable next steps.'}]},
-      ...chatHistory.map(m=>({
-        role: m.role==='assistant'?'model':'user',
-        parts:[{text:m.content}]
-      }))
-    ];
 
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
-      {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-          contents: geminiContents,
-          generationConfig:{
-            maxOutputTokens:2000,
-            temperature:0.7,
-            topP:0.9
-          },
-          safetySettings:[
-            {category:'HARM_CATEGORY_HARASSMENT',threshold:'BLOCK_NONE'},
-            {category:'HARM_CATEGORY_HATE_SPEECH',threshold:'BLOCK_NONE'},
-            {category:'HARM_CATEGORY_SEXUALLY_EXPLICIT',threshold:'BLOCK_NONE'},
-            {category:'HARM_CATEGORY_DANGEROUS_CONTENT',threshold:'BLOCK_NONE'}
-          ]
-        })
-      }
-    );
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error?.message || `HTTP ${res.status}`);
+  // Build messages with system prompt
+  const messages = [
+    {role:'system', content: toolSystemPrompt},
+    ...chatHistory
+  ];
+
+  // Try keys with auto-rotation
+  let lastError = '';
+  for (let attempt = 0; attempt < GROQ_KEYS.length; attempt++) {
+    const keyInfo = getActiveKey();
+    if (!keyInfo) {
+      showError('All API keys have reached their daily limit. Service resets at midnight. Please try again tomorrow.');
+      return;
     }
-    const data = await res.json();
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Unable to generate response.';
-    chatHistory.push({role:'assistant', content:reply});
-    if (isFirst) reportContent = reply;
-    showAIMsg(reply, isFirst);
-  } catch(e) {
-    showError(e.message);
+
+    try {
+      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${keyInfo.key}`
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages: messages,
+          max_tokens: 2000,
+          temperature: 0.7,
+          top_p: 0.9
+        })
+      });
+
+      if (res.status === 429) {
+        // Rate limited — mark key exhausted and rotate
+        markKeyExhausted(keyInfo.idx);
+        continue; // try next key
+      }
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error?.message || `HTTP ${res.status}`);
+      }
+
+      const data = await res.json();
+      const reply = data.choices?.[0]?.message?.content || 'Unable to generate response.';
+      chatHistory.push({role:'assistant', content:reply});
+      if (isFirst) reportContent = reply;
+      showAIMsg(reply, isFirst);
+      return; // success
+
+    } catch(e) {
+      lastError = e.message;
+      if (e.message.includes('401') || e.message.includes('invalid_api_key')) {
+        markKeyExhausted(keyInfo.idx);
+        continue;
+      }
+      break; // non-quota error, don't retry
+    }
   }
+
+  showError(lastError || 'Connection failed. Please check your internet and try again.');
 }
 
 function showAIMsg(text, isFirst) {
@@ -970,8 +1027,8 @@ function showError(msg) {
   div.className = 'msg ai';
   div.innerHTML = `<div class="av">⚠️</div><div class="bubble" style="border-color:rgba(204,0,1,.3)">
     <strong style="color:#e74c3c">Error: ${msg}</strong><br/>
-    ${msg.includes('API_KEY_INVALID')||msg.includes('400')||msg.includes('401') ? 'Your Gemini API key is invalid. <span style="color:var(--gold);cursor:pointer" onclick="openApiModal()">Update key →</span>' :
-      msg.includes('quota')||msg.includes('429') ? 'Free daily limit reached. Resets at midnight — try again tomorrow or get a new key at aistudio.google.com.' : msg.includes('503') ? 'AI temporarily busy. Wait 30 seconds and retry.' :
+    ${msg.includes('401')||msg.includes('invalid_api_key') ? 'API key issue — auto-rotating to backup. Please try again.' :
+      msg.includes('429')||msg.includes('quota') ? 'Rate limit hit — rotating to next key. Click Send again.' : msg.includes('503') ? 'Groq temporarily busy. Wait 20 seconds and retry.' :
       'Please check your internet connection and try again. If the problem persists, update your API key.'}
   </div>`;
   box.appendChild(div);
