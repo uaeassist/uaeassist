@@ -420,15 +420,39 @@ let chatHistory = [], toolSystemPrompt = '';
 let reportContent = '';
 
 // ─── API KEY ──────────────────────────────────────────────────────────────────
-function updateApiStatus() {} // key is embedded
-updateApiStatus();
+// ─── PAYMENT & ACCESS ─────────────────────────────────────────────────────────
+// Check if user has a valid access code for this tool
+function hasAccess(toolId) {
+  const codes = JSON.parse(localStorage.getItem('uae_access') || '{}');
+  return codes[toolId] === true;
+}
+function grantAccess(toolId) {
+  const codes = JSON.parse(localStorage.getItem('uae_access') || '{}');
+  codes[toolId] = true;
+  localStorage.setItem('uae_access', JSON.stringify(codes));
+}
+
+// Check URL for ?tool=X&paid=1 redirect from Gumroad
+(function checkGumroadReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const tool = params.get('tool');
+  const paid = params.get('paid');
+  if (tool && paid === '1') {
+    grantAccess(tool);
+    // Clean URL
+    window.history.replaceState({}, '', window.location.pathname);
+    // Auto-open the tool
+    const t = TOOLS.find(x => x.id === tool);
+    if (t) setTimeout(() => openTool(t), 500);
+  }
+})();
 
 // ─── TOOLS DATA ───────────────────────────────────────────────────────────────
 const TOOLS = [
 {
   id:'business', icon:'🏢', name:'Business Setup Wizard',
   desc:'Get a complete, personalised UAE business setup roadmap. Mainland vs Freezone, best emirate, licence type, real costs, and step-by-step process.',
-  price:'AED 15', tags:['Freezone','Mainland','Licence','Costs','Visa'],
+  price:'AED 9', oldPrice:'AED 15', gumroad:'https://petpulse.gumroad.com/l/ycaupk', tags:['Freezone','Mainland','Licence','Costs','Visa'],
   questions:[
     {k:'type', l:'What type of business do you want to set up?', t:'opts',
      o:['Consulting / Professional Services','Trading / Import-Export','E-commerce / Online Store','Restaurant / Food & Beverage','Tech / Software / App','Real Estate','Healthcare / Medical','Education / Training','Creative / Media / Marketing','Manufacturing','Other — I\'ll explain']},
@@ -488,7 +512,7 @@ Be highly specific with real numbers. Never say "varies" without giving a range.
 {
   id:'visa', icon:'📋', name:'Visa Eligibility Checker',
   desc:'Find out exactly which UAE visa you qualify for, what documents you need, the real costs, and a step-by-step application guide personalised to your situation.',
-  price:'AED 10', tags:['Golden Visa','Employment','Green Visa','Digital Nomad','Residency'],
+  price:'AED 6', oldPrice:'AED 10', gumroad:'https://petpulse.gumroad.com/l/asayi', tags:['Golden Visa','Employment','Green Visa','Digital Nomad','Residency'],
   questions:[
     {k:'nationality', l:'What is your nationality?', t:'text', p:'e.g. British, Indian, Pakistani, American...'},
     {k:'situation', l:'What best describes your current situation?', t:'opts',
@@ -550,7 +574,7 @@ Cite UAE law and specific regulations where relevant. Be precise about numbers �
 {
   id:'salary', icon:'💰', name:'Salary Analyser & Negotiator',
   desc:'Know your exact UAE market value. Get salary ranges, allowance structures, offer assessment, gratuity calculations, and a word-for-word negotiation script.',
-  price:'AED 15', tags:['Market Rate','Negotiation','Gratuity','Allowances','Counter-offer'],
+  price:'AED 9', oldPrice:'AED 15', gumroad:'https://petpulse.gumroad.com/l/nfjaaj', tags:['Market Rate','Negotiation','Gratuity','Allowances','Counter-offer'],
   questions:[
     {k:'role', l:'What is your exact job title?', t:'text', p:'e.g. Digital Marketing Manager, Senior Software Engineer, Financial Controller...'},
     {k:'industry', l:'Which industry?', t:'opts',
@@ -623,7 +647,7 @@ Always give specific AED numbers. Never say "it depends" without giving the rang
 {
   id:'rental', icon:'🏠', name:'Rental Contract Analyser',
   desc:'Paste clauses from your UAE tenancy contract and get a full legal analysis — red flags, illegal terms, missing protections, and your exact tenant rights.',
-  price:'AED 20', tags:['RERA','Ejari','Tenant Rights','Red Flags','Dubai Law'],
+  price:'AED 12', oldPrice:'AED 20', gumroad:'https://petpulse.gumroad.com/l/bchzj', tags:['RERA','Ejari','Tenant Rights','Red Flags','Dubai Law'],
   questions:[
     {k:'emirate', l:'Which emirate is the property in?', t:'opts',
      o:['Dubai','Abu Dhabi','Sharjah','Ajman','Ras Al Khaimah','Fujairah','Umm Al Quwain']},
@@ -692,7 +716,7 @@ Be specific about laws and penalties. Cite actual article numbers where possible
 {
   id:'legal', icon:'⚖️', name:'Legal Letter Generator',
   desc:'Describe your UAE legal situation and receive a professionally drafted, law-referenced formal letter ready to send — employment disputes, landlord issues, unpaid money and more.',
-  price:'AED 30', tags:['Formal Letter','UAE Law','Disputes','MOHRE','RERA'],
+  price:'AED 19', oldPrice:'AED 30', gumroad:'https://petpulse.gumroad.com/l/omanr', tags:['Formal Letter','UAE Law','Disputes','MOHRE','RERA'],
   questions:[
     {k:'letter_type', l:'What type of letter do you need?', t:'opts',
      o:['Demand for unpaid salary / wages','Security deposit refund demand','Eviction dispute / notice to vacate','Wrongful termination dispute','NOC (No Objection Certificate) request','End of service gratuity demand','Breach of contract notice','Complaint against employer','Complaint against landlord','Demand for unpaid invoices (business)','Response to false accusations','Other — I\'ll describe']},
@@ -788,10 +812,23 @@ TOOLS.forEach(tool => {
     <div class="tool-desc">${tool.desc}</div>
     <div class="tool-tags">${tool.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
     <div class="tool-footer">
-      <span class="price-badge">${tool.price}</span>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="price-badge">${tool.price}</span>
+        <span style="font-size:11px;color:var(--muted);text-decoration:line-through">${tool.oldPrice}</span>
+        <span style="font-size:10px;font-weight:700;color:#2ecc71;background:rgba(46,204,113,.15);border:1px solid rgba(46,204,113,.3);border-radius:4px;padding:2px 7px">SALE</span>
+      </div>
       <span class="tool-arrow">→</span>
     </div>`;
   c.onclick = () => openTool(tool);
+
+  // Add sample preview button
+  const previewBtn = document.createElement('button');
+  previewBtn.className = 'btn btn-outline btn-sm';
+  previewBtn.style.cssText = 'width:100%;margin-top:10px;font-size:11px;opacity:.7';
+  previewBtn.textContent = '👁 See Sample Report';
+  previewBtn.onclick = (e) => { e.stopPropagation(); currentTool = tool; openSample(tool); };
+  c.appendChild(previewBtn);
+
   grid.appendChild(c);
 });
 
@@ -820,26 +857,71 @@ function renderHead(tool) {
 
 // ─── PAY GATE ─────────────────────────────────────────────────────────────────
 function renderPayGate(tool) {
+  if (hasAccess(tool.id)) { renderQuestion(); return; }
+  const gumroadUrl = tool.gumroad;
   document.getElementById('modalBody').innerHTML = `
     <div class="pay-box">
-      <div style="font-size:13px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em;font-weight:700">One-Time Fee</div>
-      <div class="pay-price">${tool.price}</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:20px">No subscription · No hidden fees</div>
+      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(46,204,113,.12);border:1px solid rgba(46,204,113,.3);border-radius:50px;padding:5px 14px;font-size:11px;font-weight:700;color:#2ecc71;letter-spacing:.06em;margin-bottom:14px">
+        🏷️ LAUNCH SALE — LIMITED TIME
+      </div>
+      <div style="display:flex;align-items:baseline;justify-content:center;gap:10px;margin-bottom:4px">
+        <div class="pay-price">${tool.price}</div>
+        <div style="font-size:18px;color:var(--muted);text-decoration:line-through">${tool.oldPrice}</div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:20px">One-time · No subscription · No hidden fees</div>
       <div class="pay-includes">
-        <div class="pay-inc-item">Personalised AI analysis of YOUR specific situation</div>
-        <div class="pay-inc-item">Detailed report with real UAE 2026 data and laws</div>
+        <div class="pay-inc-item">Personalised AI analysis of YOUR exact situation</div>
+        <div class="pay-inc-item">Real UAE 2026 laws, costs and market data</div>
         <div class="pay-inc-item">Downloadable professional PDF report</div>
         <div class="pay-inc-item">Unlimited follow-up questions in session</div>
-        <div class="pay-inc-item">Actionable next steps you can use today</div>
+        <div class="pay-inc-item">Clear next steps you can act on today</div>
       </div>
-      <button class="btn btn-gold" style="width:100%;padding:16px;font-size:14px" onclick="simulatePay()">
-        Pay ${tool.price} & Start →
-      </button>
+      <a href="${gumroadUrl}" target="_blank" style="text-decoration:none;display:block">
+        <button class="btn btn-gold" style="width:100%;padding:16px;font-size:15px">
+          Pay ${tool.price} via Gumroad →
+        </button>
+      </a>
+      <div style="margin-top:14px;padding:12px;background:rgba(255,255,255,.03);border-radius:8px;border:1px solid rgba(255,255,255,.07)">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:600">Already paid? Enter your access code:</div>
+        <div style="display:flex;gap:8px">
+          <input id="accessCodeInput" class="q-input" style="flex:1;padding:9px 12px;font-size:12px" placeholder="Paste your access code here..."/>
+          <button class="btn btn-gold btn-sm" onclick="verifyCode('${tool.id}')">Unlock</button>
+        </div>
+        <div id="codeError" style="font-size:11px;color:#e74c3c;margin-top:6px;display:none">Invalid code. Please check and try again.</div>
+      </div>
     </div>
-    <div class="notice">🔒 Secure payment via Gumroad/PayPal. Results are AI-generated expert guidance — not a substitute for qualified legal or financial advice. Always verify with UAE government sources.</div>`;
-}
+    <div class="notice">🔒 Payments via Gumroad and PayPal. After payment you will receive an access code by email — paste it above to unlock. AI-generated guidance, not legal or financial advice.</div>`;}
 
-function simulatePay() { renderQuestion(); } // In production: redirect to Gumroad first
+// ─── ACCESS CODES ────────────────────────────────────────────────────────────
+// One fixed code per tool — put these in your Gumroad receipt messages
+const VALID_CODES = {
+  'BIZ-LAUNCH-X9K2': 'business',
+  'VIS-LAUNCH-X9K2': 'visa',
+  'SAL-LAUNCH-X9K2': 'salary',
+  'RNT-LAUNCH-X9K2': 'rental',
+  'LGL-LAUNCH-X9K2': 'legal',
+};
+
+function verifyCode(toolId) {
+  const input = document.getElementById('accessCodeInput');
+  const code = input?.value?.trim().toUpperCase();
+  if (!code) return;
+
+  const codeToolId = VALID_CODES[code];
+  if (codeToolId && codeToolId === toolId) {
+    grantAccess(toolId);
+    renderQuestion();
+  } else {
+    const errEl = document.getElementById('codeError');
+    if (errEl) {
+      errEl.textContent = codeToolId
+        ? 'This code is for a different tool. Please use the correct product.'
+        : 'Invalid code. Please check your email and try again.';
+      errEl.style.display = 'block';
+    }
+    if (input) input.style.borderColor = '#e74c3c';
+  }
+}
 
 // ─── QUESTIONS ────────────────────────────────────────────────────────────────
 function renderQuestion() {
@@ -1129,7 +1211,8 @@ function downloadReport() {
   </div>
 </div>
 <div class="footer">UAE Assist · Expert AI Tools for Life in the UAE · uaeassist.vercel.app<br/>Report generated ${d} · For personal use only · Not for redistribution</div>
-</body></html>`;
+
+</html>`;
 
   const w = window.open('','_blank');
   w.document.write(html);
@@ -1137,8 +1220,245 @@ function downloadReport() {
   setTimeout(()=>w.print(), 600);
 }
 
+
+// ─── SAMPLE REPORTS ──────────────────────────────────────────────────────────
+const SAMPLES = {
+business: `## 🏆 OUR RECOMMENDATION
+**Ajman Free Zone (AFZA)** — Best fit for a solo consulting business. Lowest setup cost in UAE, 100% foreign ownership, zero tax, flexi-desk option means no physical office needed to start.
+
+## 📍 BEST EMIRATE & LOCATION
+**Ajman Free Zone** is the top pick for a solo consultant:
+- Setup cost: AED 6,500–9,000 all-in (cheapest in UAE)
+- 1 visa included in base package
+- No physical office required — flexi-desk qualifies
+- 15 minutes from Dubai, full UAE banking access
+
+Runner-up: **IFZA Dubai** (AED 12,500) — better prestige, more visa allocations.
+Avoid mainland for now — DED licence minimum AED 15,000+.
+
+## 📋 LICENCE TYPE & ACTIVITIES
+**Professional Services Licence**
+Activities: Management Consultancy, Business Consultancy, Marketing Consultancy
+No special government approvals needed for general consulting.
+
+## 💰 REAL COST BREAKDOWN (AED)
+Trade licence (Ajman FZ): 5,750
+Establishment card: 500
+Flexi-desk (1 year): 1,500
+Residence visa (1 person): 3,200
+Medical + Emirates ID: 950
+PRO typing fees: 400
+**First year TOTAL: 12,300**
+Annual renewal: ~7,500
+
+## 📅 STEP-BY-STEP PROCESS
+1. Choose activities & apply online at ajmanfreezone.ae (Day 1–2)
+2. Submit passport copies + pay licence fee (Day 2–3)
+3. Receive trade licence (Day 4–5)
+4. Open UAE business bank account (Week 2)
+5. Apply for establishment card + entry permit (Week 2)
+6. Medical test + Emirates ID biometrics (Week 3)
+7. Receive Emirates ID + visa stamp — start trading ✅ (Week 4–5)
+
+## ⚠️ IMPORTANT WARNINGS
+- Never pay an agent more than AED 400–600 for PRO services
+- Freezone licence cannot directly serve UAE mainland clients without a local distributor agreement
+- Renew 30 days before expiry to avoid AED 500/month penalty
+
+## 💡 INSIDER TIP
+Apply directly on ajmanfreezone.ae yourself — fully online, takes 20 minutes, saves AED 2,000–5,000 vs using a setup agent.
+
+## 📞 NEXT STEP
+Visit ajmanfreezone.ae today → Start a Business → Professional Services → complete the online form.`,
+
+visa: `## 🏆 YOUR BEST VISA OPTION
+**UAE Green Visa (Freelancer/Self-Employed) — 5 Year Residency**
+Perfect match: skilled professional, independent work, no employer sponsor needed.
+
+## ✅ DO YOU QUALIFY?
+**YES — you meet all key criteria.**
+✓ Bachelor degree or higher
+✓ MOHRE Freelance Permit (required — AED 1,075/year)
+✓ Income evidence AED 15,000+/month average
+✓ Health insurance (required)
+
+## 💰 TOTAL COST BREAKDOWN (AED)
+MOHRE Freelance Permit: 1,075
+ICA Green Visa application: 1,010
+Medical fitness test: 320
+Emirates ID: 370
+Health insurance (basic): 600–1,200/year
+Typing fees: 150
+**Total first year: 3,525–4,125**
+Annual renewal (years 2–5): ~1,800
+
+## ⏱️ REALISTIC TIMELINE
+Week 1: MOHRE Freelance Permit (online, 3–5 days)
+Week 2: Apply Green Visa via ICA Smart App
+Week 2–3: Entry permit issued
+Week 3: Medical test + Emirates ID biometrics
+Week 4–5: Emirates ID delivered, visa stamped ✅
+
+## 👨‍👩‍👧 FAMILY SPONSORSHIP
+Green Visa holders CAN sponsor spouse and children.
+Cost per dependent: AED 2,500–3,500
+Minimum income to sponsor: AED 4,000/month
+
+## ⚠️ COMMON REJECTION REASONS
+1. Attested degree doesn't match field of work
+2. Irregular bank statements — show 6 months not 3
+3. Health insurance below DHA minimum coverage
+
+## 📞 IMMEDIATE NEXT STEP
+Download the **ICA UAE Smart App** → start Green Visa application today. Takes 30 minutes.`,
+
+salary: `## 📊 YOUR MARKET VALUE
+Senior Digital Marketing Manager — Dubai, 7 years experience
+
+25th percentile (minimum): AED 18,000/month
+50th percentile (median): AED 24,000/month
+75th percentile (strong): AED 32,000/month
+90th percentile (top): AED 42,000+/month
+
+## 💼 STANDARD PACKAGE STRUCTURE
+Basic salary (60%): AED 14,400
+Housing allowance (25%): AED 6,000
+Transport allowance: AED 1,500
+Phone allowance: AED 500
+Annual bonus: 1–2 months salary
+Annual flights: AED 3,000–5,000
+
+## ⚖️ OFFER ASSESSMENT — AED 22,000 TOTAL
+Verdict: **SLIGHTLY BELOW MARKET (-8%)**
+You are AED 2,000/month below median = AED 24,000/year gap.
+Your housing component is low — push here first.
+
+## 🤝 NEGOTIATION SCRIPT (Email)
+"Thank you for the offer. I'm very excited about this opportunity. Having reviewed the package against current Dubai market rates for senior marketing professionals with my experience level, I'd like to discuss adjusting the total package to AED 26,000. I'm flexible on structure and happy to discuss the housing allowance component. I'm confident I can deliver strong results and look forward to joining the team."
+
+## 📈 GRATUITY (based on AED 14,400 basic)
+After 1 year: AED 5,538
+After 3 years: AED 16,615
+After 5 years: AED 36,000
+After 10 years: AED 86,400
+
+## 💡 TOP UAE NEGOTIATION TACTICS
+1. Always negotiate housing first — companies move this more easily than basic salary
+2. Ask for annual flight allowance if not included — almost always granted
+3. Request a 6-month salary review clause in your contract
+
+## ⚠️ RED FLAG
+If basic salary is below 50% of total package, your gratuity and overtime pay will be significantly lower than expected.`,
+
+rental: `## 🚨 RED FLAGS IDENTIFIED
+
+🔴 ILLEGAL — Rent increase clause:
+"Landlord may increase rent by any amount with 30 days notice"
+→ ILLEGAL under Dubai Law No. 26 of 2007. Maximum increase is capped by RERA Rental Index. Landlord must give 90 days notice minimum. This clause is unenforceable.
+
+🟡 UNFAIR — Maintenance clause:
+"Tenant responsible for all maintenance and repairs"
+→ Under UAE law, structural repairs and major systems are landlord's responsibility. You are only liable for minor repairs under AED 500.
+
+🟡 UNUSUAL — Early exit penalty of 3 months rent
+→ Legal but above standard. Typical is 1–2 months. Negotiate down before signing.
+
+## ✅ RENT ASSESSMENT
+1BR Dubai Marina — AED 75,000/year
+Market range: AED 70,000–85,000
+Verdict: FAIR — at market rate
+Max legal increase at renewal: 0% (per current RERA index)
+
+## 🔐 SECURITY DEPOSIT
+AED 7,500 = 10% of rent — TOO HIGH for unfurnished.
+Legal maximum (unfurnished): 5% = AED 3,750.
+Demand reduction to AED 3,750 before signing.
+
+## 🛡️ YOUR KEY RIGHTS
+1. Cannot be evicted without 12 months notice via Notary Public
+2. Rent increases capped by RERA index — verify at dubailand.gov.ae
+3. Ejari registration is mandatory — do within 30 days of signing
+4. Landlord must maintain AC, plumbing, electrical systems
+5. Dispute any deposit deduction at RERA within 30 days of vacating
+
+## 📋 BEFORE YOU SIGN — ACTION LIST
+1. Demand deposit reduced to AED 3,750
+2. Strike out illegal rent increase clause — replace with: "Subject to RERA Rental Index"
+3. Add maintenance clause per Law No. 26 of 2007 Article 16
+4. Register Ejari within 30 days at ica.gov.ae
+5. Photograph every room before moving in
+
+## 📞 DISPUTE ESCALATION
+RERA Rental Dispute Centre: dubailand.gov.ae
+Filing fee: AED 3.5% of annual rent (min AED 500)
+Average resolution: 3–6 weeks`,
+
+legal: `SAMPLE LEGAL LETTER — UNPAID SALARY DEMAND
+─────────────────────────────────────────────
+Dubai, 13 March 2026
+
+Mohammed Al-Rashidi
+Dubai Marina, Dubai
+
+Mr. Ahmed Hassan — HR Manager
+Emirates Trading LLC, Deira, Dubai
+
+RE: FORMAL DEMAND FOR PAYMENT OF OUTSTANDING SALARY
+
+Dear Mr. Hassan,
+
+FORMAL NOTICE OF UNPAID WAGES
+
+I, Mohammed Al-Rashidi, employed as Senior Sales Executive (Employee ID: ET-2891) since 14 January 2023, formally demand immediate payment of my outstanding March 2026 salary of AED 18,500, unpaid as of today in violation of UAE Federal Decree-Law No. 33 of 2021 on the Regulation of Labour Relations.
+
+BACKGROUND
+My monthly salary of AED 18,500 (basic AED 11,000 + housing AED 5,500 + transport AED 2,000) has been paid consistently on the 28th of each month. The March 2026 payment, due 28 February 2026, has not been received. Verbal requests to accounts on 5 March and 10 March 2026 were unaddressed.
+
+LEGAL BASIS
+Under Article 56 of Federal Decree-Law No. 33 of 2021, wages must be paid within 10 days of the due date. Failure to pay is a violation reportable to MOHRE. Under the Wage Protection System (WPS), electronic wage transfer by due date is a legal obligation.
+
+DEMAND
+I demand full payment of AED 18,500 within 5 working days (by 19 March 2026).
+
+CONSEQUENCES OF NON-PAYMENT
+If not resolved by 19 March 2026, I will: (1) File a formal MOHRE complaint at mohre.gov.ae; (2) Initiate a Labour Court claim; (3) Report the WPS violation to the Central Bank UAE. Article 38 of the Labour Law also entitles me to resign with full end-of-service benefits if salary is withheld beyond 60 days.
+
+Yours faithfully,
+Mohammed Al-Rashidi
+13 March 2026
+─────────────────────────────────────────────
+LEGAL BRIEFING: Your case strength is 9/10.
+NEXT STEP: File at mohre.gov.ae — free, takes 10 minutes, most salary cases resolved within 48 hours.`
+};
+
+// ─── SAMPLE MODAL ─────────────────────────────────────────────────────────────
+function openSample(tool) {
+  const sample = SAMPLES[tool.id];
+  if (!sample) return;
+
+  document.getElementById('toolModal').style.maxWidth = '720px';
+  document.getElementById('modalHead').innerHTML = `
+    <button class="modal-close" onclick="closeToolDirect()">✕</button>
+    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(46,204,113,.12);border:1px solid rgba(46,204,113,.25);border-radius:50px;padding:4px 14px;font-size:11px;font-weight:700;color:#2ecc71;letter-spacing:.06em;margin-bottom:10px">SAMPLE REPORT PREVIEW</div>
+    <div class="modal-title">${tool.icon} ${tool.name}</div>
+    <div class="modal-sub">This is an example of what your personalised report looks like. Your actual report will be tailored to YOUR specific answers.</div>`;
+
+  document.getElementById('modalBody').innerHTML = `
+    <div style="background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.12);border-radius:10px;padding:22px;max-height:420px;overflow-y:auto;font-size:13px;line-height:1.8;color:rgba(245,240,232,.85);white-space:pre-wrap;font-family:'DM Sans',sans-serif">${formatMsg(sample)}</div>
+    <div style="margin-top:16px;display:flex;gap:10px">
+      <button class="btn btn-gold" style="flex:1;padding:14px" onclick="closeToolDirect();setTimeout(()=>openTool(currentTool||${JSON.stringify({id:tool.id,name:tool.name,icon:tool.icon,price:tool.price,oldPrice:tool.oldPrice,gumroad:tool.gumroad,tags:tool.tags,questions:[]}).replace(/"/g,"'").replace(/'/g,'"')},100)">
+        Get My Personalised Report — ${tool.price} →
+      </button>
+    </div>
+    <div class="notice" style="margin-top:10px">⚡ Your real report will be 3× more detailed, based on YOUR specific situation, with exact steps and numbers for your case.</div>`;
+
+  document.getElementById('toolOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
 // ─── API MODAL HELPERS ────────────────────────────────────────────────────────
 function closeApiModal(e){ if(e.target===document.getElementById('apiOverlay'))closeApiModalDirect(); }
 </script>
+
 </body>
 </html>
