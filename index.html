@@ -3,406 +3,262 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>UAE Assist — AI Tools for Life in the UAE</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<title>UAE Assist — AI Expert Tools for Life in the UAE</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --navy:       #0A1628;
-  --deep-navy:  #060E1A;
-  --card:       #111F38;
-  --card2:      #162236;
-  --gold:       #C9A84C;
-  --gold-light: #EDD98A;
-  --gold-dark:  #A07830;
-  --off-white:  #F5F0E8;
-  --muted:      #8A8070;
-  --red:        #CC0001;
-  --green:      #006400;
-  --white:      #FFFFFF;
+  --navy:#0A1628; --deep:#060E1A; --card:#111F38; --card2:#162236;
+  --gold:#C9A84C; --gold-l:#EDD98A; --gold-d:#A07830; --gold-dim:rgba(201,168,76,0.12);
+  --white:#F5F0E8; --muted:#8A8070; --red:#CC0001; --green:#006400;
+  --success:#1A6B3A; --warn:#B8860B;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--deep);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--deep)}
+::-webkit-scrollbar-thumb{background:var(--gold-d);border-radius:3px}
 
-body {
-  background: var(--deep-navy);
-  color: var(--off-white);
-  font-family: 'DM Sans', sans-serif;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+/* FLAG BAR */
+.flag-bar{display:flex;height:4px;position:fixed;top:0;left:0;right:0;z-index:1000}
+.flag-bar span:nth-child(1){background:var(--red);flex:1}
+.flag-bar span:nth-child(2){background:#111;flex:1}
+.flag-bar span:nth-child(3){background:#fff;flex:1}
+.flag-bar span:nth-child(4){background:var(--green);flex:1}
 
-/* ── scrollbar ── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--deep-navy); }
-::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 3px; }
+/* NAV */
+nav{position:fixed;top:4px;left:0;right:0;z-index:999;display:flex;align-items:center;
+  justify-content:space-between;padding:0 48px;height:60px;
+  background:rgba(6,14,26,0.95);backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(201,168,76,0.12)}
+.logo{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:700;
+  color:var(--gold);display:flex;align-items:center;gap:10px;letter-spacing:.03em}
+.nav-r{display:flex;align-items:center;gap:24px}
+.nav-r a{color:var(--white);text-decoration:none;font-size:13px;font-weight:500;
+  opacity:.7;transition:.2s;letter-spacing:.02em}
+.nav-r a:hover{opacity:1;color:var(--gold)}
+.api-pill{display:flex;align-items:center;gap:8px;background:rgba(201,168,76,0.1);
+  border:1px solid rgba(201,168,76,0.25);border-radius:50px;padding:6px 16px;
+  cursor:pointer;transition:.2s;font-size:12px;font-weight:600;color:var(--gold-l)}
+.api-pill:hover{background:rgba(201,168,76,0.18)}
+.api-dot{width:7px;height:7px;border-radius:50%;background:#666;transition:.3s}
+.api-dot.ok{background:#2ecc71;box-shadow:0 0 6px #2ecc71}
 
-/* ── noise texture overlay ── */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 0; opacity: 0.4;
-}
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:100px 24px 60px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.hero-bg::before{content:'';position:absolute;width:700px;height:700px;
+  background:radial-gradient(circle,rgba(201,168,76,.07) 0%,transparent 70%);
+  border-radius:50%;top:50%;left:50%;transform:translate(-50%,-60%);
+  animation:glow 5s ease-in-out infinite}
+.hero-bg::after{content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C9A84C' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+@keyframes glow{0%,100%{transform:translate(-50%,-60%) scale(1);opacity:.6}50%{transform:translate(-50%,-60%) scale(1.15);opacity:1}}
 
-/* ── UAE flag bar ── */
-.flag-bar {
-  display: flex; height: 5px; width: 100%;
-  position: fixed; top: 0; left: 0; z-index: 100;
-}
-.flag-bar span:nth-child(1) { background: var(--red);   flex: 1; }
-.flag-bar span:nth-child(2) { background: #111;         flex: 1; }
-.flag-bar span:nth-child(3) { background: var(--white); flex: 1; }
-.flag-bar span:nth-child(4) { background: var(--green); flex: 1; }
+.badge{display:inline-flex;align-items:center;gap:8px;
+  background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);
+  border-radius:50px;padding:6px 20px;font-size:11px;font-weight:700;
+  color:var(--gold-l);letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:28px;animation:up .6s ease both}
+.hero h1{font-family:'Cormorant Garamond',serif;
+  font-size:clamp(52px,9vw,108px);font-weight:700;line-height:.95;
+  color:var(--white);animation:up .6s .1s ease both}
+.hero h1 em{color:var(--gold);font-style:normal}
+.hero p{max-width:580px;margin:22px auto 0;font-size:17px;line-height:1.75;
+  color:rgba(245,240,232,.6);animation:up .6s .2s ease both}
+.hero-cta{display:flex;gap:12px;margin-top:40px;flex-wrap:wrap;
+  justify-content:center;animation:up .6s .3s ease both}
+@keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── NAV ── */
-nav {
-  position: fixed; top: 5px; left: 0; right: 0; z-index: 99;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 40px; height: 64px;
-  background: rgba(6,14,26,0.92);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(201,168,76,0.15);
-}
-.nav-logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 22px; font-weight: 700;
-  color: var(--gold); letter-spacing: 0.04em;
-  display: flex; align-items: center; gap: 10px;
-}
-.nav-logo .flag { font-size: 20px; }
-.nav-links { display: flex; gap: 28px; }
-.nav-links a {
-  color: var(--off-white); text-decoration: none;
-  font-size: 13px; font-weight: 500; letter-spacing: 0.03em;
-  opacity: 0.75; transition: opacity .2s, color .2s;
-}
-.nav-links a:hover { opacity: 1; color: var(--gold); }
+.stats{display:flex;gap:50px;margin-top:64px;padding-top:40px;
+  border-top:1px solid rgba(201,168,76,.12);flex-wrap:wrap;
+  justify-content:center;animation:up .6s .4s ease both}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--gold)}
+.stat-l{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
 
-/* ── HERO ── */
-.hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center;
-  padding: 120px 24px 80px;
-  position: relative;
-}
-.hero-glow {
-  position: absolute;
-  width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
-  animation: pulse 4s ease-in-out infinite;
-}
-@keyframes pulse { 0%,100%{transform:scale(1);opacity:.6} 50%{transform:scale(1.1);opacity:1} }
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:8px;border:none;border-radius:7px;
+  padding:14px 28px;font-size:13px;font-weight:700;cursor:pointer;
+  font-family:'DM Sans',sans-serif;letter-spacing:.04em;text-transform:uppercase;
+  transition:all .2s}
+.btn-gold{background:var(--gold);color:var(--deep)}
+.btn-gold:hover{background:var(--gold-l);transform:translateY(-2px);box-shadow:0 10px 28px rgba(201,168,76,.3)}
+.btn-outline{background:transparent;color:var(--white);border:1px solid rgba(245,240,232,.2)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+.btn-sm{padding:9px 18px;font-size:12px}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none!important;box-shadow:none!important}
 
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(201,168,76,0.1);
-  border: 1px solid rgba(201,168,76,0.3);
-  border-radius: 50px; padding: 6px 18px;
-  font-size: 12px; font-weight: 600;
-  color: var(--gold-light); letter-spacing: 0.08em;
-  text-transform: uppercase; margin-bottom: 28px;
-  animation: fadeUp 0.6s ease both;
-}
-.hero h1 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(48px, 8vw, 96px);
-  font-weight: 700; line-height: 1.0;
-  color: var(--off-white);
-  animation: fadeUp 0.6s 0.1s ease both;
-}
-.hero h1 span { color: var(--gold); }
-.hero p {
-  max-width: 560px; margin: 20px auto 0;
-  font-size: 17px; line-height: 1.7;
-  color: rgba(245,240,232,0.65);
-  animation: fadeUp 0.6s 0.2s ease both;
-}
-.hero-cta {
-  display: flex; gap: 14px; margin-top: 40px; flex-wrap: wrap; justify-content: center;
-  animation: fadeUp 0.6s 0.3s ease both;
-}
-.btn-gold {
-  background: var(--gold);
-  color: var(--deep-navy);
-  border: none; border-radius: 6px;
-  padding: 14px 32px; font-size: 14px; font-weight: 700;
-  cursor: pointer; letter-spacing: 0.04em;
-  transition: background .2s, transform .15s, box-shadow .2s;
-  font-family: 'DM Sans', sans-serif;
-  text-transform: uppercase;
-}
-.btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.3); }
-.btn-outline {
-  background: transparent;
-  color: var(--off-white); border: 1px solid rgba(245,240,232,0.25);
-  border-radius: 6px; padding: 14px 32px; font-size: 14px; font-weight: 500;
-  cursor: pointer; transition: border-color .2s, color .2s;
-  font-family: 'DM Sans', sans-serif;
-}
-.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+/* SECTIONS */
+.section{padding:88px 24px;max-width:1140px;margin:0 auto}
+.sec-tag{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);
+  font-weight:700;margin-bottom:12px}
+.sec-title{font-family:'Cormorant Garamond',serif;
+  font-size:clamp(32px,5vw,56px);font-weight:700;line-height:1.05;margin-bottom:48px}
+.sec-title em{color:var(--gold);font-style:normal}
 
-@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+/* TOOLS GRID */
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px}
+.tool-card{background:var(--card);border:1px solid rgba(201,168,76,.1);border-radius:16px;
+  padding:32px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.tool-card::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(201,168,76,.04) 0%,transparent 55%);
+  pointer-events:none}
+.tool-card:hover{transform:translateY(-5px);border-color:rgba(201,168,76,.38);
+  box-shadow:0 20px 50px rgba(0,0,0,.45)}
+.tool-icon{font-size:38px;margin-bottom:18px;display:block}
+.tool-name{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:700;
+  color:var(--white);margin-bottom:8px}
+.tool-desc{font-size:13px;line-height:1.65;color:rgba(245,240,232,.58);margin-bottom:22px}
+.tool-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.tag{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.18);
+  border-radius:4px;padding:3px 9px;color:var(--gold-l)}
+.tool-footer{display:flex;align-items:center;justify-content:space-between}
+.price-badge{background:var(--gold);color:var(--deep);border-radius:6px;
+  padding:5px 14px;font-size:12px;font-weight:800;letter-spacing:.04em}
+.tool-arrow{color:var(--gold);font-size:20px;transition:.2s}
+.tool-card:hover .tool-arrow{transform:translateX(5px)}
 
-/* ── stats bar ── */
-.stats-bar {
-  display: flex; justify-content: center; gap: 60px;
-  padding: 32px; margin-top: 60px;
-  border-top: 1px solid rgba(201,168,76,0.15);
-  flex-wrap: wrap;
-  animation: fadeUp 0.6s 0.4s ease both;
-}
-.stat { text-align: center; }
-.stat-num { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:700; color:var(--gold); }
-.stat-label { font-size:12px; color:var(--muted); letter-spacing:0.06em; text-transform:uppercase; margin-top:2px; }
+/* MODAL */
+.overlay{position:fixed;inset:0;z-index:2000;background:rgba(6,14,26,.94);
+  backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;
+  padding:20px;opacity:0;pointer-events:none;transition:opacity .28s}
+.overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--card);border:1px solid rgba(201,168,76,.18);border-radius:20px;
+  width:100%;max-width:720px;max-height:92vh;overflow-y:auto;
+  transform:translateY(24px);transition:transform .28s;position:relative}
+.overlay.open .modal{transform:translateY(0)}
+.modal-head{padding:32px 36px 0;position:sticky;top:0;background:var(--card);
+  z-index:10;border-bottom:1px solid rgba(201,168,76,.08);padding-bottom:20px}
+.modal-body{padding:28px 36px 36px}
+.modal-close{position:absolute;top:20px;right:24px;background:rgba(255,255,255,.07);
+  border:none;color:var(--muted);font-size:18px;cursor:pointer;width:32px;height:32px;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;transition:.2s}
+.modal-close:hover{color:var(--white);background:rgba(255,255,255,.14)}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;
+  color:var(--white);margin-bottom:4px}
+.modal-sub{font-size:12px;color:var(--muted)}
 
-/* ── TOOLS GRID ── */
-.section { padding: 80px 24px; max-width: 1100px; margin: 0 auto; }
-.section-label {
-  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--gold); font-weight: 600; margin-bottom: 12px;
-}
-.section-title {
-  font-family:'Cormorant Garamond',serif;
-  font-size: clamp(32px,5vw,52px); font-weight:700; line-height:1.1;
-  color: var(--off-white); margin-bottom: 48px;
-}
-.section-title span { color: var(--gold); }
+/* PROGRESS */
+.prog-bar{height:3px;background:rgba(255,255,255,.07);border-radius:2px;margin:18px 0 4px}
+.prog-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .4s ease}
+.prog-info{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:20px}
 
-.tools-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-}
-.tool-card {
-  background: var(--card);
-  border: 1px solid rgba(201,168,76,0.12);
-  border-radius: 14px; padding: 32px;
-  cursor: pointer;
-  transition: transform .2s, border-color .2s, box-shadow .2s;
-  position: relative; overflow: hidden;
-}
-.tool-card::before {
-  content:''; position:absolute; inset:0;
-  background: linear-gradient(135deg, rgba(201,168,76,0.04) 0%, transparent 60%);
-  pointer-events:none;
-}
-.tool-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(201,168,76,0.4);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
-}
-.tool-icon { font-size: 36px; margin-bottom: 18px; }
-.tool-name { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--off-white); margin-bottom:8px; }
-.tool-desc { font-size:13px; line-height:1.6; color:rgba(245,240,232,0.6); margin-bottom:20px; }
-.tool-footer { display:flex; align-items:center; justify-content:space-between; }
-.tool-price {
-  font-size:13px; font-weight:700;
-  background: rgba(201,168,76,0.15);
-  color: var(--gold-light);
-  padding: 4px 12px; border-radius:50px;
-  border: 1px solid rgba(201,168,76,0.25);
-}
-.tool-arrow { color:var(--gold); font-size:18px; transition:transform .2s; }
-.tool-card:hover .tool-arrow { transform:translateX(4px); }
+/* QUESTIONS */
+.q-label{font-size:14px;font-weight:600;color:var(--gold-l);margin-bottom:12px;line-height:1.5}
+.q-opts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px}
+.q-opt{background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.18);
+  border-radius:8px;padding:10px 18px;font-size:13px;color:var(--white);
+  cursor:pointer;transition:all .18s;user-select:none}
+.q-opt:hover{background:rgba(201,168,76,.12);border-color:rgba(201,168,76,.4)}
+.q-opt.sel{background:rgba(201,168,76,.18);border-color:var(--gold);color:var(--gold-l);font-weight:600}
+.q-input,.q-ta{width:100%;background:rgba(6,14,26,.8);border:1px solid rgba(201,168,76,.2);
+  border-radius:8px;padding:12px 16px;color:var(--white);font-size:13px;
+  font-family:'DM Sans',sans-serif;outline:none;transition:.2s}
+.q-input:focus,.q-ta:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.1)}
+.q-ta{resize:vertical;min-height:90px;line-height:1.6}
 
-/* ── MODAL ── */
-.modal-overlay {
-  position: fixed; inset: 0; z-index: 200;
-  background: rgba(6,14,26,0.92);
-  backdrop-filter: blur(8px);
-  display: flex; align-items: center; justify-content: center;
-  padding: 24px;
-  opacity: 0; pointer-events: none;
-  transition: opacity .25s;
-}
-.modal-overlay.open { opacity: 1; pointer-events: all; }
-.modal {
-  background: var(--card);
-  border: 1px solid rgba(201,168,76,0.2);
-  border-radius: 18px;
-  width: 100%; max-width: 680px;
-  max-height: 90vh; overflow-y: auto;
-  padding: 40px;
-  transform: translateY(20px);
-  transition: transform .25s;
-  position: relative;
-}
-.modal-overlay.open .modal { transform: translateY(0); }
-.modal-close {
-  position: absolute; top: 20px; right: 24px;
-  background: none; border: none; color: var(--muted);
-  font-size: 24px; cursor: pointer; line-height: 1;
-  transition: color .2s;
-}
-.modal-close:hover { color: var(--gold); }
-.modal-title {
-  font-family:'Cormorant Garamond',serif;
-  font-size: 28px; font-weight:700; color:var(--off-white); margin-bottom:6px;
-}
-.modal-subtitle { font-size:13px; color:var(--muted); margin-bottom:28px; }
+/* PAY GATE */
+.pay-box{background:linear-gradient(135deg,rgba(201,168,76,.07),rgba(201,168,76,.02));
+  border:1px solid rgba(201,168,76,.22);border-radius:14px;padding:30px;
+  text-align:center;margin-bottom:18px}
+.pay-price{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:700;color:var(--gold)}
+.pay-price sup{font-size:18px;vertical-align:super}
+.pay-includes{display:flex;flex-direction:column;gap:8px;margin:20px 0;text-align:left}
+.pay-inc-item{display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(245,240,232,.8)}
+.pay-inc-item::before{content:'✓';color:var(--gold);font-weight:700;flex-shrink:0}
 
-/* ── CHAT / TOOL UI ── */
-.chat-box {
-  background: var(--deep-navy);
-  border: 1px solid rgba(201,168,76,0.1);
-  border-radius: 12px; padding: 20px;
-  min-height: 200px; max-height: 400px;
-  overflow-y: auto; margin-bottom: 16px;
-  display: flex; flex-direction: column; gap: 14px;
-}
-.msg { display:flex; gap:12px; animation: fadeUp 0.3s ease; }
-.msg.user { flex-direction: row-reverse; }
-.msg-avatar {
-  width: 32px; height: 32px; border-radius: 50%;
-  display:flex; align-items:center; justify-content:center;
-  font-size:14px; flex-shrink:0;
-}
-.msg.ai .msg-avatar { background: rgba(201,168,76,0.2); }
-.msg.user .msg-avatar { background: rgba(255,255,255,0.1); }
-.msg-bubble {
-  max-width: 80%; padding: 12px 16px; border-radius: 12px;
-  font-size: 13px; line-height: 1.6;
-}
-.msg.ai .msg-bubble {
-  background: var(--card2);
-  border: 1px solid rgba(201,168,76,0.1);
-  color: var(--off-white);
-  border-radius: 4px 12px 12px 12px;
-}
-.msg.user .msg-bubble {
-  background: rgba(201,168,76,0.15);
-  border: 1px solid rgba(201,168,76,0.25);
-  color: var(--off-white);
-  border-radius: 12px 4px 12px 12px;
-}
-.typing { display:flex; gap:5px; align-items:center; padding:8px 0; }
-.typing span {
-  width:7px; height:7px; border-radius:50%;
-  background: var(--gold); opacity:0.5;
-  animation: blink 1.2s infinite;
-}
-.typing span:nth-child(2) { animation-delay:.2s; }
-.typing span:nth-child(3) { animation-delay:.4s; }
-@keyframes blink { 0%,80%,100%{opacity:.2} 40%{opacity:1} }
+/* CHAT */
+.chat-box{background:rgba(6,14,26,.7);border:1px solid rgba(201,168,76,.1);
+  border-radius:12px;padding:20px;min-height:220px;max-height:420px;
+  overflow-y:auto;display:flex;flex-direction:column;gap:16px;margin-bottom:14px}
+.msg{display:flex;gap:12px;animation:up .3s ease}
+.msg.user{flex-direction:row-reverse}
+.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:15px;flex-shrink:0}
+.msg.ai .av{background:rgba(201,168,76,.18);border:1px solid rgba(201,168,76,.25)}
+.msg.user .av{background:rgba(255,255,255,.09)}
+.bubble{max-width:82%;padding:13px 17px;border-radius:14px;font-size:13px;line-height:1.7}
+.msg.ai .bubble{background:var(--card2);border:1px solid rgba(201,168,76,.1);
+  color:var(--white);border-radius:4px 14px 14px 14px}
+.msg.user .bubble{background:rgba(201,168,76,.14);border:1px solid rgba(201,168,76,.22);
+  color:var(--white);border-radius:14px 4px 14px 14px}
+.bubble strong{color:var(--gold-l)}
+.bubble h4{color:var(--gold);font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin:10px 0 4px}
+.bubble ul{padding-left:16px}
+.bubble li{margin-bottom:4px}
 
-.input-row {
-  display: flex; gap: 10px;
-}
-.chat-input {
-  flex: 1; background: var(--deep-navy);
-  border: 1px solid rgba(201,168,76,0.2);
-  border-radius: 8px; padding: 12px 16px;
-  color: var(--off-white); font-size:13px;
-  font-family:'DM Sans',sans-serif;
-  outline: none; resize: none;
-  transition: border-color .2s;
-}
-.chat-input:focus { border-color: var(--gold); }
-.send-btn {
-  background: var(--gold); color: var(--deep-navy);
-  border:none; border-radius:8px; padding:12px 20px;
-  cursor:pointer; font-weight:700; font-size:13px;
-  transition: background .2s, transform .15s;
-  font-family:'DM Sans',sans-serif;
-}
-.send-btn:hover { background:var(--gold-light); transform:scale(1.02); }
-.send-btn:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+.typing-dots{display:flex;gap:5px;align-items:center;padding:4px 0}
+.typing-dots span{width:7px;height:7px;border-radius:50%;background:var(--gold);
+  animation:blink 1.3s infinite}
+.typing-dots span:nth-child(2){animation-delay:.22s}
+.typing-dots span:nth-child(3){animation-delay:.44s}
+@keyframes blink{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
 
-/* ── payment gate ── */
-.pay-gate {
-  background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02));
-  border: 1px solid rgba(201,168,76,0.25);
-  border-radius: 12px; padding: 28px;
-  text-align: center; margin-bottom:16px;
-}
-.pay-gate h3 { font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--off-white); margin-bottom:8px; }
-.pay-gate p { font-size:13px; color:var(--muted); margin-bottom:20px; line-height:1.6; }
-.pay-price { font-size:32px; font-weight:700; color:var(--gold); margin-bottom:4px; }
-.pay-price span { font-size:14px; color:var(--muted); }
+.input-row{display:flex;gap:10px}
+.chat-in{flex:1;background:rgba(6,14,26,.8);border:1px solid rgba(201,168,76,.18);
+  border-radius:9px;padding:12px 16px;color:var(--white);font-size:13px;
+  font-family:'DM Sans',sans-serif;outline:none;resize:none;transition:.2s;line-height:1.5}
+.chat-in:focus{border-color:var(--gold)}
+.send-btn{background:var(--gold);color:var(--deep);border:none;border-radius:9px;
+  padding:12px 18px;cursor:pointer;font-weight:700;font-size:13px;
+  transition:.2s;font-family:'DM Sans',sans-serif;flex-shrink:0}
+.send-btn:hover{background:var(--gold-l)}
+.send-btn:disabled{opacity:.4;cursor:not-allowed}
 
-/* ── question steps ── */
-.q-step { margin-bottom: 20px; }
-.q-label { font-size:13px; font-weight:600; color:var(--gold-light); margin-bottom:8px; }
-.q-options { display:flex; flex-wrap:wrap; gap:8px; }
-.q-opt {
-  background: var(--deep-navy);
-  border: 1px solid rgba(201,168,76,0.2);
-  border-radius: 6px; padding:8px 16px;
-  font-size:12px; color:var(--off-white);
-  cursor:pointer; transition:all .2s;
-}
-.q-opt:hover, .q-opt.selected { background:rgba(201,168,76,0.15); border-color:var(--gold); color:var(--gold-light); }
-.q-input {
-  width:100%; background:var(--deep-navy);
-  border:1px solid rgba(201,168,76,0.2);
-  border-radius:6px; padding:10px 14px;
-  color:var(--off-white); font-size:13px;
-  font-family:'DM Sans',sans-serif; outline:none;
-  transition:border-color .2s;
-}
-.q-input:focus { border-color:var(--gold); }
+/* REPORT BUTTON */
+.report-btn{display:flex;align-items:center;gap:10px;background:rgba(26,107,58,.15);
+  border:1px solid rgba(26,107,58,.4);border-radius:9px;padding:14px 20px;
+  cursor:pointer;width:100%;margin-top:14px;transition:all .2s;font-family:'DM Sans',sans-serif}
+.report-btn:hover{background:rgba(26,107,58,.25);border-color:rgba(26,107,58,.6)}
+.report-btn-icon{font-size:22px}
+.report-btn-text{text-align:left}
+.report-btn-text strong{display:block;font-size:13px;font-weight:700;color:#2ecc71}
+.report-btn-text span{font-size:11px;color:var(--muted)}
 
-/* ── result card ── */
-.result-card {
-  background: var(--deep-navy);
-  border: 1px solid rgba(201,168,76,0.2);
-  border-radius: 10px; padding: 20px;
-  margin-top: 16px;
-}
-.result-card h4 { color:var(--gold); font-size:14px; font-weight:700; margin-bottom:10px; text-transform:uppercase; letter-spacing:.06em; }
-.result-card p { font-size:13px; line-height:1.7; color:var(--off-white); }
-.result-card ul { padding-left:18px; }
-.result-card li { font-size:13px; line-height:1.8; color:rgba(245,240,232,0.85); }
+/* NOTICE */
+.notice{background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.12);
+  border-radius:8px;padding:11px 15px;font-size:11px;color:var(--muted);
+  margin-top:12px;line-height:1.7}
 
-/* ── HOW IT WORKS ── */
-.steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:24px; }
-.step { text-align:center; padding:24px; }
-.step-num {
-  width:48px; height:48px; border-radius:50%;
-  background:rgba(201,168,76,0.1);
-  border:1px solid rgba(201,168,76,0.3);
-  display:flex; align-items:center; justify-content:center;
-  font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--gold);
-  margin: 0 auto 16px;
-}
-.step h3 { font-size:15px; font-weight:600; color:var(--off-white); margin-bottom:8px; }
-.step p { font-size:13px; color:var(--muted); line-height:1.6; }
+/* API KEY MODAL */
+.api-modal-box{padding:32px}
+.api-input{width:100%;background:rgba(6,14,26,.9);border:1px solid rgba(201,168,76,.25);
+  border-radius:8px;padding:13px 16px;color:var(--white);font-size:13px;
+  font-family:'DM Sans',sans-serif;outline:none;letter-spacing:.04em;margin-bottom:12px;
+  transition:.2s}
+.api-input:focus{border-color:var(--gold)}
 
-/* ── FOOTER ── */
-footer {
-  border-top:1px solid rgba(201,168,76,0.1);
-  padding:40px 24px; text-align:center;
-}
-footer p { font-size:12px; color:var(--muted); line-height:1.8; }
-footer a { color:var(--gold); text-decoration:none; }
+/* HOW IT WORKS */
+.how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2px;
+  background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.08);border-radius:16px;overflow:hidden}
+.how-step{padding:32px 28px;background:var(--deep);transition:.2s}
+.how-step:hover{background:var(--card)}
+.how-num{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:700;
+  color:rgba(201,168,76,.2);margin-bottom:12px;line-height:1}
+.how-step h3{font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px}
+.how-step p{font-size:13px;color:var(--muted);line-height:1.6}
 
-/* ── LOADING ── */
-.spinner {
-  width:20px; height:20px;
-  border:2px solid rgba(201,168,76,0.3);
-  border-top-color:var(--gold);
-  border-radius:50%;
-  animation:spin .7s linear infinite;
-  display:inline-block; margin-right:8px;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
+/* TRUST SECTION */
+.trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
+.trust-card{background:var(--card);border:1px solid rgba(201,168,76,.08);
+  border-radius:12px;padding:24px;text-align:center}
+.trust-icon{font-size:28px;margin-bottom:12px}
+.trust-card h4{font-size:14px;font-weight:700;color:var(--white);margin-bottom:6px}
+.trust-card p{font-size:12px;color:var(--muted);line-height:1.6}
 
-.notice {
-  background:rgba(201,168,76,0.06);
-  border:1px solid rgba(201,168,76,0.15);
-  border-radius:8px; padding:10px 14px;
-  font-size:11px; color:var(--muted);
-  margin-top:12px; line-height:1.6;
-}
+/* FOOTER */
+footer{border-top:1px solid rgba(201,168,76,.08);padding:48px 24px;text-align:center}
+footer p{font-size:12px;color:var(--muted);line-height:2}
+footer a{color:var(--gold);text-decoration:none}
+footer strong{color:var(--white)}
 
-@media(max-width:600px){
-  nav{padding:0 20px;}
-  .nav-links{display:none;}
-  .modal{padding:24px;}
-  .stats-bar{gap:30px;}
+@media(max-width:640px){
+  nav{padding:0 20px}
+  .nav-r a{display:none}
+  .modal-head,.modal-body{padding-left:22px;padding-right:22px}
+  .hero h1{font-size:48px}
 }
 </style>
 </head>
@@ -411,583 +267,858 @@ footer a { color:var(--gold); text-decoration:none; }
 <div class="flag-bar"><span></span><span></span><span></span><span></span></div>
 
 <nav>
-  <div class="nav-logo"><span class="flag">🇦🇪</span> UAE Assist</div>
-  <div class="nav-links">
+  <div class="logo">🇦🇪 UAE Assist</div>
+  <div class="nav-r">
     <a href="#tools">Tools</a>
     <a href="#how">How It Works</a>
-    <a href="#tools">Pricing</a>
+    <a href="#trust">Why Us</a>
+    <div class="api-pill" onclick="openApiModal()">
+      <div class="api-dot" id="apiDot"></div>
+      <span id="apiLabel">Connect AI</span>
+    </div>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-badge">🇦🇪 Powered by AI · Built for the UAE</div>
-  <h1>Your UAE life,<br/><span>handled.</span></h1>
-  <p>Smart AI tools for business setup, visa questions, salary negotiation, rental contracts and legal letters — instant answers, no consultants needed.</p>
+  <div class="hero-bg"></div>
+  <div class="badge">🤖 Powered by Claude AI · UAE 2026 Data</div>
+  <h1>Your UAE life,<br/><em>expertly handled.</em></h1>
+  <p>Five AI tools that give you personalised, expert-level guidance on UAE business, visas, salaries, rentals and legal matters — with a downloadable professional report every time.</p>
   <div class="hero-cta">
-    <button class="btn-gold" onclick="scrollToTools()">Explore Tools</button>
-    <button class="btn-outline" onclick="scrollToHow()">How It Works</button>
+    <button class="btn btn-gold" onclick="document.getElementById('tools').scrollIntoView({behavior:'smooth'})">
+      Explore All Tools ↓
+    </button>
+    <button class="btn btn-outline" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">
+      How It Works
+    </button>
   </div>
-  <div class="stats-bar">
-    <div class="stat"><div class="stat-num">5</div><div class="stat-label">AI Tools</div></div>
-    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Always On</div></div>
-    <div class="stat"><div class="stat-num">AED 10</div><div class="stat-label">Starting Price</div></div>
-    <div class="stat"><div class="stat-num">60s</div><div class="stat-label">Avg Answer Time</div></div>
+  <div class="stats">
+    <div style="text-align:center"><div class="stat-n">5</div><div class="stat-l">Expert AI Tools</div></div>
+    <div style="text-align:center"><div class="stat-n">24/7</div><div class="stat-l">Always Available</div></div>
+    <div style="text-align:center"><div class="stat-n">PDF</div><div class="stat-l">Downloadable Reports</div></div>
+    <div style="text-align:center"><div class="stat-n">AED 10</div><div class="stat-l">Starting Price</div></div>
+    <div style="text-align:center"><div class="stat-n">2026</div><div class="stat-l">Up-to-date Data</div></div>
   </div>
 </section>
 
 <!-- TOOLS -->
-
-<div class="api-banner" id="apiBanner" style="display:none;max-width:700px;margin:0 auto;padding:0 24px 30px">
-  <div style="background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);border-radius:12px;padding:20px">
-    <div style="font-size:13px;font-weight:700;color:#EDD98A;margin-bottom:8px">⚙️ Add Your Anthropic API Key to Activate Tools</div>
-    <div style="font-size:12px;color:#7A7060;margin-bottom:12px;line-height:1.6">Get a free key at <a href="https://console.anthropic.com" target="_blank" style="color:#C9A84C">console.anthropic.com</a> → API Keys → Create Key. Saved only in your browser.</div>
-    <div style="display:flex;gap:8px">
-      <input id="apiInp" type="password" placeholder="sk-ant-api03-..." style="flex:1;background:#060E1A;border:1px solid rgba(201,168,76,.3);border-radius:8px;padding:10px 14px;color:#F8F4EC;font-size:12px;font-family:sans-serif;outline:none"/>
-      <button onclick="saveKey()" style="background:#C9A84C;color:#060E1A;border:none;border-radius:8px;padding:10px 18px;font-weight:700;font-size:12px;cursor:pointer;font-family:sans-serif">Save Key</button>
-    </div>
-  </div>
-</div>
-
 <section class="section" id="tools">
-  <div class="section-label">AI Tools</div>
-  <div class="section-title">What do you need<br/><span>help with?</span></div>
+  <div class="sec-tag">AI-Powered Tools</div>
+  <div class="sec-title">What do you need<br/><em>help with today?</em></div>
   <div class="tools-grid" id="toolsGrid"></div>
 </section>
 
 <!-- HOW IT WORKS -->
-<section class="section" id="how" style="border-top:1px solid rgba(201,168,76,0.08)">
-  <div class="section-label">Process</div>
-  <div class="section-title">How it <span>works</span></div>
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">1</div>
-      <h3>Pick a Tool</h3>
-      <p>Choose the tool that matches your situation from the menu above.</p>
+<section class="section" id="how" style="border-top:1px solid rgba(201,168,76,.07)">
+  <div class="sec-tag">The Process</div>
+  <div class="sec-title">From question to<br/><em>expert answer in 3 minutes</em></div>
+  <div class="how-grid">
+    <div class="how-step">
+      <div class="how-num">01</div>
+      <h3>Pick Your Tool</h3>
+      <p>Choose from 5 expert AI tools built specifically for UAE residents and expats.</p>
     </div>
-    <div class="step">
-      <div class="step-num">2</div>
+    <div class="how-step">
+      <div class="how-num">02</div>
       <h3>Answer Questions</h3>
-      <p>Our AI asks you the right questions to understand your exact situation.</p>
+      <p>Our AI asks smart, targeted questions to understand your exact situation — not generic advice.</p>
     </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <h3>Get Your Answer</h3>
-      <p>Receive a detailed, personalised result — not generic Google advice.</p>
+    <div class="how-step">
+      <div class="how-num">03</div>
+      <h3>Get Your Analysis</h3>
+      <p>Receive a detailed personalised report with actionable steps, laws, numbers and next moves.</p>
     </div>
-    <div class="step">
-      <div class="step-num">4</div>
-      <h3>Take Action</h3>
-      <p>Walk away with a clear plan, letter, or recommendation you can use today.</p>
+    <div class="how-step">
+      <div class="how-num">04</div>
+      <h3>Download Your Report</h3>
+      <p>Save a professional PDF report of your full analysis to keep, share, or act on anytime.</p>
+    </div>
+    <div class="how-step">
+      <div class="how-num">05</div>
+      <h3>Ask Follow-ups</h3>
+      <p>The AI remembers your context — ask follow-up questions and get instant expert answers.</p>
     </div>
   </div>
 </section>
 
+<!-- TRUST -->
+<section class="section" id="trust" style="border-top:1px solid rgba(201,168,76,.07)">
+  <div class="sec-tag">Why UAE Assist</div>
+  <div class="sec-title">Built different,<br/><em>for the UAE</em></div>
+  <div class="trust-grid">
+    <div class="trust-card"><div class="trust-icon">🧠</div><h4>UAE-Specific AI</h4><p>Trained on UAE laws, RERA regulations, MOHRE rules, and 2026 market data — not generic advice.</p></div>
+    <div class="trust-card"><div class="trust-icon">📄</div><h4>PDF Reports</h4><p>Every analysis generates a professional downloadable report you can save, print, or share.</p></div>
+    <div class="trust-card"><div class="trust-icon">💬</div><h4>Follow-up Chat</h4><p>Ask unlimited follow-up questions. The AI remembers your full context throughout the session.</p></div>
+    <div class="trust-card"><div class="trust-icon">⚡</div><h4>Instant Results</h4><p>No waiting for a consultant to call back. Get expert-level guidance in under 60 seconds.</p></div>
+    <div class="trust-card"><div class="trust-icon">🔒</div><h4>Private & Secure</h4><p>Your details are never stored or shared. Each session is completely private.</p></div>
+    <div class="trust-card"><div class="trust-icon">💰</div><h4>90% Cheaper</h4><p>UAE consultants charge AED 500–2,000/hour. Our tools start at AED 10 with no hidden fees.</p></div>
+  </div>
+</section>
+
 <footer>
-  <p>🇦🇪 <strong style="color:var(--gold)">UAE Assist</strong> — AI tools for life in the UAE<br/>
-  Not legal or financial advice. Always verify with official UAE government sources.<br/>
-  <a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="mailto:hello@uaeassist.com">Contact</a></p>
+  <p>🇦🇪 <strong>UAE Assist</strong> — Expert AI Tools for Life in the UAE<br/>
+  <a href="#">Privacy Policy</a> · <a href="#">Terms of Service</a> · <a href="mailto:hello@uaeassist.com">Contact</a><br/>
+  <span style="font-size:11px">Not legal or financial advice. Always verify with qualified UAE professionals and official government sources (ica.gov.ae · mohre.gov.ae · rta.ae · rera.gov.ae)</span></p>
 </footer>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-  <div class="modal" id="modalBox">
-    <button class="modal-close" onclick="closeModalDirect()">✕</button>
-    <div id="modalContent"></div>
+<!-- API KEY MODAL -->
+<div class="overlay" id="apiOverlay" onclick="closeApiModal(event)">
+  <div class="modal" style="max-width:480px" onclick="event.stopPropagation()">
+    <div class="api-modal-box">
+      <button class="modal-close" onclick="closeApiModalDirect()">✕</button>
+      <div style="font-size:32px;margin-bottom:16px">🔑</div>
+      <div class="modal-title">Connect Your AI</div>
+      <div class="modal-sub" style="margin-bottom:24px">Enter your free Google Gemini API key to power all tools. Your key is stored only in your browser — never on our servers.</div>
+      <input class="api-input" id="apiKeyInput" type="password" placeholder="AIzaSy..."/>
+      <button class="btn btn-gold" style="width:100%" onclick="saveApiKey()">Connect & Activate Tools</button>
+      <div class="notice" style="margin-top:16px">
+        Get your <strong style="color:var(--gold)">free</strong> API key at <a href="https://aistudio.google.com" target="_blank" style="color:var(--gold)">aistudio.google.com</a> → Get API Key → Create API Key. Completely free, no credit card needed.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOOL MODAL -->
+<div class="overlay" id="toolOverlay" onclick="closeToolModal(event)">
+  <div class="modal" id="toolModal" onclick="event.stopPropagation()">
+    <div class="modal-head" id="modalHead"></div>
+    <div class="modal-body" id="modalBody"></div>
   </div>
 </div>
 
 <script>
-// ── API Key Management ───────────────────────────────────────────────────────
-function saveKey() {
-  const k = document.getElementById('apiInp').value.trim();
-  if (!k.startsWith('sk-ant')) { alert('Please enter a valid Anthropic API key'); return; }
-  localStorage.setItem('uae_assist_key', k);
-  document.getElementById('apiBanner').style.display = 'none';
-  alert('✅ API key saved! All tools are now active.');
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let API_KEY = localStorage.getItem('uae_api_key') || '';
+let currentTool = null, answers = {}, currentQ = 0;
+let chatHistory = [], toolSystemPrompt = '';
+let reportContent = '';
+
+// ─── API KEY ──────────────────────────────────────────────────────────────────
+function updateApiStatus() {
+  const dot = document.getElementById('apiDot');
+  const lbl = document.getElementById('apiLabel');
+  if (API_KEY) { dot.className = 'api-dot ok'; lbl.textContent = 'AI Connected'; }
+  else { dot.className = 'api-dot'; lbl.textContent = 'Connect AI'; }
 }
-window.addEventListener('load', () => {
-  if (!localStorage.getItem('uae_assist_key')) {
-    document.getElementById('apiBanner').style.display = 'block';
-  }
-});
-
-// ── Tool definitions ──────────────────────────────────────────────────────────
-const TOOLS = [
-  {
-    id: "business",
-    icon: "🏢",
-    name: "Business Setup Wizard",
-    desc: "Mainland vs Freezone? Which emirate? What licence? Get a personalised UAE business setup roadmap in 60 seconds.",
-    price: "AED 15",
-    priceNum: 15,
-    questions: [
-      { key:"type", label:"What type of business do you want to set up?", type:"options",
-        opts:["Consulting / Freelance","Trading / Import-Export","E-commerce","Restaurant / Food","Tech / Software","Professional Services","Other"] },
-      { key:"target", label:"Who are your customers?", type:"options",
-        opts:["UAE residents","Other UAE businesses","International clients","Mix of all"] },
-      { key:"office", label:"Do you need a physical office?", type:"options",
-        opts:["Yes, definitely","No, I'll work remotely","Maybe later"] },
-      { key:"budget", label:"What's your setup budget?", type:"options",
-        opts:["Under AED 10,000","AED 10,000–20,000","AED 20,000–50,000","AED 50,000+"] },
-      { key:"visa", label:"Do you need a UAE residence visa from this company?", type:"options",
-        opts:["Yes — for me only","Yes — for me + employees","No, I already have a visa"] },
-    ],
-    systemPrompt: `You are a UAE business setup expert with deep knowledge of UAE mainland, freezone, and offshore company formation as of 2026. 
-    The user has answered a questionnaire. Based on their answers, provide:
-    1. RECOMMENDATION: Mainland or Freezone (and which specific freezone if freezone)
-    2. BEST EMIRATE: Which emirate suits them and why (Dubai, Abu Dhabi, Sharjah, Ajman, RAK)
-    3. LICENCE TYPE: What licence category they need
-    4. ESTIMATED COST: Setup cost range in AED
-    5. STEP-BY-STEP: 5-6 clear next steps to get started
-    6. PRO TIP: One insider tip they won't find on Google
-    Be specific, practical, and concise. Format with clear sections. No fluff.`
-  },
-  {
-    id: "visa",
-    icon: "📋",
-    name: "Visa Eligibility Checker",
-    desc: "Not sure which UAE visa you qualify for? Answer 5 questions and get your visa options ranked with exact requirements.",
-    price: "AED 10",
-    priceNum: 10,
-    questions: [
-      { key:"nationality", label:"What is your nationality?", type:"text", placeholder:"e.g. British, Indian, American..." },
-      { key:"situation", label:"What's your current situation?", type:"options",
-        opts:["Job offer in UAE","Self-employed / Freelancer","Investor / Business owner","Retired","Student","Spouse/Family of UAE resident","Just exploring options"] },
-      { key:"salary", label:"What is your monthly income or expected salary?", type:"options",
-        opts:["Under AED 5,000","AED 5,000–10,000","AED 10,000–20,000","AED 20,000–30,000","AED 30,000+","Variable / Unsure"] },
-      { key:"property", label:"Do you own UAE property?", type:"options",
-        opts:["Yes — worth AED 2M+","Yes — worth under AED 2M","No","Planning to buy"] },
-      { key:"duration", label:"How long do you want to stay in the UAE?", type:"options",
-        opts:["1 year or less","2 years","5 years","10 years","Permanently if possible"] },
-    ],
-    systemPrompt: `You are a UAE immigration expert with full knowledge of all UAE visa categories as of 2026, including Employment Visa, Golden Visa, Green Visa, Digital Nomad Visa, Retirement Visa, and Investor Visa.
-    Based on the user's answers, provide:
-    1. TOP RECOMMENDATION: The best visa for their situation with explanation
-    2. OTHER OPTIONS: 1-2 alternative visas they could consider
-    3. REQUIREMENTS: Exact documents and criteria needed for their top recommendation
-    4. TIMELINE: How long the process typically takes
-    5. COST: Approximate fees in AED
-    6. NEXT STEP: The single most important first action they should take
-    Be direct and specific. If their nationality affects eligibility (e.g. GCC nationals have different rules), mention it.`
-  },
-  {
-    id: "salary",
-    icon: "💰",
-    name: "Salary Analyser",
-    desc: "Is your offer fair? Enter your role and get your UAE market range, allowance breakdown, and a word-for-word negotiation script.",
-    price: "AED 15",
-    priceNum: 15,
-    questions: [
-      { key:"role", label:"What is your job title?", type:"text", placeholder:"e.g. Marketing Manager, Software Engineer, Accountant..." },
-      { key:"experience", label:"How many years of experience do you have?", type:"options",
-        opts:["0–2 years","3–5 years","6–9 years","10–15 years","15+ years"] },
-      { key:"industry", label:"Which industry?", type:"options",
-        opts:["Technology","Finance / Banking","Healthcare","Real Estate","Hospitality","Retail / FMCG","Government / Semi-Gov","Construction","Media / Marketing","Other"] },
-      { key:"emirate", label:"Which emirate is the job in?", type:"options",
-        opts:["Dubai","Abu Dhabi","Sharjah","Ajman","RAK","Other"] },
-      { key:"offer", label:"What offer did you receive (if any)?", type:"text", placeholder:"e.g. AED 18,000 basic + AED 4,000 housing, or 'No offer yet'" },
-    ],
-    systemPrompt: `You are a UAE salary expert and career coach with knowledge of the 2026 UAE job market across all major industries.
-    Based on the user's role, experience, industry and emirate, provide:
-    1. MARKET RANGE: Realistic minimum, median, and maximum total package in AED/month for their profile
-    2. PACKAGE BREAKDOWN: How the package is typically structured (basic, housing, transport allowances) as percentages
-    3. OFFER ASSESSMENT: If they shared an offer, tell them honestly if it's below/at/above market
-    4. NEGOTIATION SCRIPT: A word-for-word message they can send or say to negotiate a better offer (professional tone)
-    5. GRATUITY NOTE: What their annual gratuity entitlement would be at the median salary
-    6. PRO TIP: One negotiation tactic specific to UAE hiring culture
-    Be specific with numbers. Do not give vague ranges. UAE salaries are tax-free so factor that into context.`
-  },
-  {
-    id: "rental",
-    icon: "🏠",
-    name: "Rental Contract Checker",
-    desc: "Paste your UAE tenancy contract and our AI will flag red flags, illegal clauses, missing protections, and overcharges.",
-    price: "AED 20",
-    priceNum: 20,
-    questions: [
-      { key:"emirate", label:"Which emirate is the property in?", type:"options",
-        opts:["Dubai","Abu Dhabi","Sharjah","Ajman","RAK","Other"] },
-      { key:"type", label:"What type of property?", type:"options",
-        opts:["Apartment","Villa","Studio","Room in shared apartment","Commercial"] },
-      { key:"rent", label:"What is the annual rent?", type:"text", placeholder:"e.g. AED 65,000 per year" },
-      { key:"cheques", label:"How many cheques are you paying?", type:"options",
-        opts:["1 cheque (full year)","2 cheques","4 cheques","6 cheques","12 cheques (monthly)"] },
-      { key:"contract", label:"Paste any specific clauses you're worried about (or describe your concern):", type:"textarea", placeholder:"e.g. 'Landlord says he can enter the property anytime' or paste the clause here..." },
-    ],
-    systemPrompt: `You are a UAE tenancy law expert with deep knowledge of Dubai's RERA regulations, Abu Dhabi's rent laws, and UAE tenancy law as of 2026.
-    Based on the user's rental details and concerns, provide:
-    1. RED FLAGS: Any illegal, unfair or unusual clauses based on what they shared
-    2. RENT ASSESSMENT: Whether their rent seems fair for that emirate and property type in 2026
-    3. CHEQUE TERMS: Whether their payment structure is standard or unfavourable
-    4. MISSING PROTECTIONS: Key clauses that should be in their contract but may be missing
-    5. TENANT RIGHTS: Their key rights under UAE law relevant to their situation
-    6. ACTION: What they should do if they spot a problem (e.g. negotiate, refuse to sign, escalate to RERA)
-    Cite specific UAE laws where relevant (e.g. Dubai Tenancy Law No. 26 of 2007). Be practical and direct.`
-  },
-  {
-    id: "legal",
-    icon: "⚖️",
-    name: "Legal Letter Generator",
-    desc: "Need a formal letter? Describe your situation and get a professional UAE-standard legal letter ready to send.",
-    price: "AED 30",
-    priceNum: 30,
-    questions: [
-      { key:"type", label:"What type of letter do you need?", type:"options",
-        opts:["Complaint to landlord","Eviction dispute","Salary dispute with employer","Demand for unpaid money","NOC request","Employment termination dispute","Other"] },
-      { key:"sender", label:"Who is sending the letter?", type:"text", placeholder:"e.g. Your name / your company name" },
-      { key:"recipient", label:"Who is the letter addressed to?", type:"text", placeholder:"e.g. Landlord name, company name, HR department..." },
-      { key:"situation", label:"Describe your situation in detail:", type:"textarea",
-        placeholder:"e.g. My landlord has refused to return my AED 5,000 security deposit after I vacated the property on 1 March 2026, despite leaving it in perfect condition..." },
-      { key:"outcome", label:"What outcome do you want?", type:"text", placeholder:"e.g. Return of deposit within 7 days, reinstatement to my job, payment of AED X..." },
-    ],
-    systemPrompt: `You are an expert UAE legal letter writer with knowledge of UAE law, DIFC, ADGM, labour law, and tenancy regulations as of 2026.
-    Write a professional, formal legal letter based on the user's situation. The letter should:
-    1. Be written in formal UAE legal English
-    2. Reference relevant UAE laws where applicable (Labour Law, Tenancy Law, Civil Code etc.)
-    3. Clearly state the facts, the grievance, and the desired outcome
-    4. Include a reasonable deadline for response (e.g. 7-14 days)
-    5. Include a consequence statement if not resolved (e.g. "we reserve the right to escalate to MOHRE / RERA / the courts")
-    6. Be ready to send as-is with minimal editing
-    Format as a proper letter with: Date placeholder, From/To addresses, Subject line, Body, Closing.
-    After the letter, add a brief NOTE section with 1-2 tips on next steps if the letter is ignored.`
-  },
-];
-
-// ── Render tool cards ─────────────────────────────────────────────────────────
-const grid = document.getElementById('toolsGrid');
-TOOLS.forEach(tool => {
-  const card = document.createElement('div');
-  card.className = 'tool-card';
-  card.innerHTML = `
-    <div class="tool-icon">${tool.icon}</div>
-    <div class="tool-name">${tool.name}</div>
-    <div class="tool-desc">${tool.desc}</div>
-    <div class="tool-footer">
-      <span class="tool-price">${tool.price}</span>
-      <span class="tool-arrow">→</span>
-    </div>`;
-  card.onclick = () => openTool(tool);
-  grid.appendChild(card);
-});
-
-// ── Modal logic ───────────────────────────────────────────────────────────────
-let currentTool = null;
-let answers = {};
-let paid = false;
-let currentQ = 0;
-
-function openTool(tool) {
-  currentTool = tool;
-  answers = {};
-  paid = false;
-  currentQ = 0;
-  renderPayGate(tool);
-  document.getElementById('modalOverlay').classList.add('open');
+function openApiModal() {
+  document.getElementById('apiKeyInput').value = API_KEY;
+  document.getElementById('apiOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
-
-function closeModal(e) {
-  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+function closeApiModal(e) { if(e.target===document.getElementById('apiOverlay')) closeApiModalDirect(); }
+function closeApiModalDirect() {
+  document.getElementById('apiOverlay').classList.remove('open');
+  document.body.style.overflow = '';
 }
-function closeModalDirect() {
-  document.getElementById('modalOverlay').classList.remove('open');
+function saveApiKey() {
+  const k = document.getElementById('apiKeyInput').value.trim();
+  if (!k || k.length < 20) { alert('Please enter a valid Google Gemini API key'); return; }
+  API_KEY = k; localStorage.setItem('uae_api_key', k);
+  updateApiStatus(); closeApiModalDirect();
+}
+updateApiStatus();
+
+// ─── TOOLS DATA ───────────────────────────────────────────────────────────────
+const TOOLS = [
+{
+  id:'business', icon:'🏢', name:'Business Setup Wizard',
+  desc:'Get a complete, personalised UAE business setup roadmap. Mainland vs Freezone, best emirate, licence type, real costs, and step-by-step process.',
+  price:'AED 15', tags:['Freezone','Mainland','Licence','Costs','Visa'],
+  questions:[
+    {k:'type', l:'What type of business do you want to set up?', t:'opts',
+     o:['Consulting / Professional Services','Trading / Import-Export','E-commerce / Online Store','Restaurant / Food & Beverage','Tech / Software / App','Real Estate','Healthcare / Medical','Education / Training','Creative / Media / Marketing','Manufacturing','Other — I\'ll explain']},
+    {k:'customers', l:'Who are your primary customers?', t:'opts',
+     o:['UAE consumers (B2C)','UAE businesses (B2B)','International clients only','Mix of UAE + International','Government / Semi-government']},
+    {k:'office', l:'Do you need a physical office or retail space?', t:'opts',
+     o:['Yes — customer-facing shop or office','Yes — private office for operations','No — I can work remotely / from home','Virtual office is fine','Not sure yet']},
+    {k:'employees', l:'How many employees (including yourself) do you plan to hire?', t:'opts',
+     o:['Just me (solo)','2–5 employees','6–15 employees','16–50 employees','50+ employees']},
+    {k:'budget', l:'What is your total setup budget?', t:'opts',
+     o:['Under AED 8,000','AED 8,000–15,000','AED 15,000–30,000','AED 30,000–60,000','AED 60,000+','Flexible — I want the best option']},
+    {k:'visa', l:'Do you need a UAE residence visa from this business?', t:'opts',
+     o:['Yes — just for me','Yes — for me and family','Yes — for me and employees','No — I already have a visa','Not sure']},
+    {k:'timeline', l:'When do you want to launch?', t:'opts',
+     o:['As soon as possible (within 1 month)','1–3 months','3–6 months','Just researching for now']},
+  ],
+  system:`You are a senior UAE business setup consultant with 15 years of experience. You have encyclopedic knowledge of all UAE mainland departments (DED, ADDED, Sharjah DED), all major freezones (DMCC, DIFC, ADGM, Meydan, Ajman Freezone, RAK ICC, IFZA, Dubai Internet City, Dubai Media City, Dubai South, Sharjah Media City, RAKEZ) and their 2026 costs, rules, and advantages.
+
+Based on the user's answers, produce a comprehensive, personalised business setup report with these EXACT sections:
+
+## 🏆 OUR RECOMMENDATION
+State clearly: Mainland or Freezone? Which specific freezone or emirate DED? Why this is the best fit for THEIR specific situation.
+
+## 📍 BEST EMIRATE & LOCATION
+Recommend the specific emirate and area. Compare 2-3 options with pros/cons for their business type.
+
+## 📋 LICENCE TYPE & ACTIVITIES
+Exact licence category and specific business activities to register. Flag any activities with special approvals needed.
+
+## 💰 REAL COST BREAKDOWN
+Itemise ALL costs in AED:
+- Trade licence fee
+- Registration/establishment card
+- Visa costs (if needed)
+- Office/flexi-desk requirement
+- PRO service fees
+- First year total estimate
+- Ongoing annual renewal estimate
+
+## 🪪 VISA ENTITLEMENTS
+How many visas their setup allows. Cost per visa. Timeline.
+
+## 📅 STEP-BY-STEP PROCESS
+8-10 numbered steps from day 1 to trading, with realistic timeframes for each.
+
+## ⚠️ IMPORTANT WARNINGS
+2-3 common mistakes businesses in their category make. Regulatory requirements specific to their activity.
+
+## 💡 INSIDER TIP
+One non-obvious advantage or money-saving strategy specific to their situation that most consultants don't mention.
+
+## 📞 NEXT STEPS
+The single most important first action they should take this week.
+
+Be highly specific with real numbers. Never say "varies" without giving a range. Write as if you are personally advising a client paying you AED 2,000 for this consultation.`
+},
+{
+  id:'visa', icon:'📋', name:'Visa Eligibility Checker',
+  desc:'Find out exactly which UAE visa you qualify for, what documents you need, the real costs, and a step-by-step application guide personalised to your situation.',
+  price:'AED 10', tags:['Golden Visa','Employment','Green Visa','Digital Nomad','Residency'],
+  questions:[
+    {k:'nationality', l:'What is your nationality?', t:'text', p:'e.g. British, Indian, Pakistani, American...'},
+    {k:'situation', l:'What best describes your current situation?', t:'opts',
+     o:['I have a job offer from a UAE company','I\'m employed and want to transfer to UAE','I\'m self-employed / freelancer','I own or plan to start a business','I\'m an investor','I\'m a skilled professional (doctor, engineer, etc.)','I\'m a student / recent graduate with high grades','I\'m retired','Spouse / family of UAE resident or citizen','Just exploring my options']},
+    {k:'income', l:'What is your current or expected monthly income?', t:'opts',
+     o:['Under AED 5,000','AED 5,000–10,000','AED 10,000–20,000','AED 20,000–30,000','AED 30,000+','Variable / commission-based','Not currently earning']},
+    {k:'property', l:'Do you own or plan to own UAE property?', t:'opts',
+     o:['Yes — worth AED 2 million or more','Yes — worth under AED 2 million','No property','Planning to buy within 6 months']},
+    {k:'education', l:'What is your highest qualification?', t:'opts',
+     o:['High school','Bachelor\'s degree','Master\'s degree','PhD / Doctorate','Professional certification (CPA, CFA, medical licence, etc.)','No formal qualification']},
+    {k:'duration', l:'How long do you want to stay in the UAE?', t:'opts',
+     o:['Less than 1 year','1–2 years','2–5 years','5–10 years','Permanently if possible','Not sure yet']},
+    {k:'family', l:'Will you be bringing family members?', t:'opts',
+     o:['No — just me','Yes — spouse only','Yes — spouse and children','Yes — parents too','Yes — full family']},
+  ],
+  system:`You are a UAE immigration expert and licensed PRO consultant with deep knowledge of every UAE visa category as of 2026. You know the exact eligibility criteria, documents required, costs, processing times, and success rates for all visa types.
+
+Produce a comprehensive, personalised visa eligibility report:
+
+## 🏆 YOUR BEST VISA OPTION
+Name the specific visa. Explain in 2-3 sentences exactly why this is their best match based on their answers.
+
+## ✅ DO YOU QUALIFY?
+Be direct: Yes / Likely / Possibly / Not currently. Explain which criteria they meet and which (if any) they don't.
+
+## 📋 EXACT REQUIREMENTS
+List every document and criterion needed for their recommended visa. Flag anything that depends on their nationality.
+
+## 💰 TOTAL COST BREAKDOWN
+Itemise in AED:
+- Application fees
+- Medical test
+- Emirates ID
+- Insurance (if required)
+- Typing/PRO fees
+- Total first-year cost
+- Annual renewal cost
+
+## ⏱️ REALISTIC TIMELINE
+Week-by-week breakdown of the application process. Flag any steps that could cause delays.
+
+## 🔄 ALTERNATIVE OPTIONS
+2 other visas they could consider with brief pros/cons.
+
+## 🌍 NATIONALITY-SPECIFIC NOTES
+Any rules, restrictions, or advantages specific to their nationality (some nationalities get free visas on arrival, some have faster processing, some have restrictions).
+
+## 👨‍👩‍👧 FAMILY SPONSORSHIP
+Can they sponsor family on this visa? Costs and process.
+
+## ⚠️ COMMON REJECTION REASONS
+Top 3 reasons people with their profile get rejected and how to avoid them.
+
+## 📞 IMMEDIATE NEXT STEP
+The single action they should take this week to start the process.
+
+Cite UAE law and specific regulations where relevant. Be precise about numbers — no vague ranges.`
+},
+{
+  id:'salary', icon:'💰', name:'Salary Analyser & Negotiator',
+  desc:'Know your exact UAE market value. Get salary ranges, allowance structures, offer assessment, gratuity calculations, and a word-for-word negotiation script.',
+  price:'AED 15', tags:['Market Rate','Negotiation','Gratuity','Allowances','Counter-offer'],
+  questions:[
+    {k:'role', l:'What is your exact job title?', t:'text', p:'e.g. Digital Marketing Manager, Senior Software Engineer, Financial Controller...'},
+    {k:'industry', l:'Which industry?', t:'opts',
+     o:['Technology / Software','Finance / Banking / Investment','Healthcare / Medical','Real Estate / Property','Hospitality / Tourism','Retail / FMCG / Consumer Goods','Government / Semi-government','Oil & Gas / Energy','Construction / Engineering','Media / Marketing / PR','Education','Legal / Consulting','Logistics / Supply Chain','Other']},
+    {k:'exp', l:'How many years of total experience do you have?', t:'opts',
+     o:['0–1 year (graduate)','2–3 years','4–6 years','7–10 years','11–15 years','15+ years']},
+    {k:'uae_exp', l:'How many years of UAE-specific experience?', t:'opts',
+     o:['None — new to UAE','Less than 1 year','1–3 years','3–7 years','7+ years']},
+    {k:'emirate', l:'Which emirate is the role in?', t:'opts',
+     o:['Dubai (DIFC or financial district)','Dubai (other areas)','Abu Dhabi (ADGM or government)','Abu Dhabi (other)','Sharjah','Ajman / RAK / Fujairah','Remote / hybrid']},
+    {k:'offer', l:'What offer have you received (or what are you currently earning)?', t:'text',
+     p:'e.g. AED 22,000 basic + AED 5,000 housing + AED 1,500 transport. Or type "No offer yet" or "Currently earning AED X"'},
+    {k:'goal', l:'What is your negotiation goal?', t:'opts',
+     o:['Assess if my current offer is fair','Counter a specific offer I received','Ask for a raise at my current job','Compare two offers I have','Just want to know my market value']},
+  ],
+  system:`You are a UAE salary expert, executive recruiter, and career coach who has placed thousands of candidates across all UAE industries. You have real-time knowledge of UAE salary benchmarks in 2026 across all major industries, job levels, and emirates.
+
+Produce a comprehensive salary analysis report:
+
+## 📊 YOUR MARKET VALUE
+State clearly:
+- Market MINIMUM (25th percentile): AED X,XXX/month total package
+- Market MEDIAN (50th percentile): AED X,XXX/month total package  
+- Market MAXIMUM (75th percentile): AED X,XXX/month total package
+- Top performer rate (90th percentile): AED X,XXX/month
+
+## 💼 STANDARD PACKAGE STRUCTURE
+Show how packages in their role/industry are typically split:
+- Basic salary: XX% (AED X,XXX)
+- Housing allowance: XX% (AED X,XXX)
+- Transport allowance: AED X,XXX
+- Other allowances (phone, education, health): AED X,XXX
+- Typical annual bonus: X months salary
+
+## ⚖️ OFFER ASSESSMENT
+If they shared an offer or current salary:
+- Verdict: BELOW MARKET / AT MARKET / ABOVE MARKET / EXCELLENT
+- By how much (% and AED amount)
+- What the gap means in annual terms
+- Which components are weak vs strong
+
+## 🤝 NEGOTIATION SCRIPT
+Provide word-for-word scripts:
+
+**Email Version** (formal, for written counter-offers):
+[Complete professional email they can copy-paste, with placeholders for their name/role]
+
+**Verbal Version** (for phone or in-person negotiation):
+[3-4 sentences to say out loud when discussing the offer]
+
+## 📈 ANNUAL GRATUITY
+Calculate their gratuity entitlement under UAE Labour Law:
+- After 1 year: AED X,XXX
+- After 3 years: AED X,XXX
+- After 5 years: AED X,XXX
+- After 10 years: AED X,XXX
+(Based on their basic salary figure)
+
+## 💡 UAE-SPECIFIC NEGOTIATION TACTICS
+3 tactics specific to UAE hiring culture that most candidates don't use.
+
+## 🚀 WHAT TO NEGOTIATE BEYOND SALARY
+List 5-7 non-salary benefits common in UAE that are worth negotiating (annual flights, education allowance, car, etc.)
+
+## ⚠️ RED FLAGS
+Any red flags in their offer structure to watch out for.
+
+Always give specific AED numbers. Never say "it depends" without giving the range it depends on.`
+},
+{
+  id:'rental', icon:'🏠', name:'Rental Contract Analyser',
+  desc:'Paste clauses from your UAE tenancy contract and get a full legal analysis — red flags, illegal terms, missing protections, and your exact tenant rights.',
+  price:'AED 20', tags:['RERA','Ejari','Tenant Rights','Red Flags','Dubai Law'],
+  questions:[
+    {k:'emirate', l:'Which emirate is the property in?', t:'opts',
+     o:['Dubai','Abu Dhabi','Sharjah','Ajman','Ras Al Khaimah','Fujairah','Umm Al Quwain']},
+    {k:'prop_type', l:'What type of property?', t:'opts',
+     o:['Apartment — Studio','Apartment — 1 Bedroom','Apartment — 2+ Bedrooms','Villa / Townhouse','Room in shared apartment','Commercial property','Warehouse / Industrial']},
+    {k:'rent', l:'What is the annual rent amount?', t:'text', p:'e.g. AED 65,000 per year'},
+    {k:'cheques', l:'How many cheques is the landlord requesting?', t:'opts',
+     o:['1 cheque (full year upfront)','2 cheques','3 cheques','4 cheques','6 cheques','12 cheques (monthly)']},
+    {k:'deposit', l:'What security deposit are they asking for?', t:'text', p:'e.g. AED 6,500 or "5% of annual rent"'},
+    {k:'concerns', l:'Paste any specific clauses you\'re worried about OR describe your concerns:', t:'ta',
+     p:'e.g. "Landlord can increase rent by 20% with 30 days notice" or "Tenant responsible for all maintenance costs including structural repairs" or describe the full situation...'},
+    {k:'extras', l:'Any other terms or issues you want us to check?', t:'text',
+     p:'e.g. No pets clause, subletting restrictions, early termination penalty, service charges...'},
+  ],
+  system:`You are a UAE tenancy law expert and RERA-registered property consultant with 12 years of experience in Dubai, Abu Dhabi, and UAE property law. You know Dubai Law No. 26 of 2007, Law No. 33 of 2008, RERA regulations, Abu Dhabi tenancy law, and the UAE Civil Transactions Law in detail.
+
+Produce a thorough rental contract analysis report:
+
+## 🚨 RED FLAGS IDENTIFIED
+List every problematic clause or term from what they shared. For each:
+- Quote the problematic element
+- Explain WHY it's a red flag
+- State whether it's ILLEGAL, UNFAIR, or UNUSUAL
+- Cite the specific UAE law it violates (if applicable)
+
+## ✅ RENT ASSESSMENT
+Is their rent fair for that property type, area, and emirate in 2026?
+- Market range for comparable properties: AED X,XXX–X,XXX
+- Verdict: BELOW MARKET / FAIR / ABOVE MARKET / SIGNIFICANTLY OVERPRICED
+- RERA Rental Index guidance (for Dubai properties)
+- Maximum legal rent increase percentage for renewals
+
+## 💳 CHEQUE & PAYMENT ANALYSIS
+- Is the number of cheques standard or is the landlord being unreasonable?
+- Legal position on bounced cheques in UAE
+- Can they negotiate more cheques? How?
+
+## 🔐 SECURITY DEPOSIT ASSESSMENT
+- Is the deposit legal? (Dubai: max 5% unfurnished, 10% furnished)
+- Conditions for legal deductions from deposit
+- How to protect their deposit when vacating
+
+## 🛡️ YOUR TENANT RIGHTS
+List 6-8 specific rights they have under UAE law relevant to their situation:
+- Right to Ejari registration
+- Notice periods for eviction
+- Permitted reasons for early eviction
+- Maintenance responsibilities (landlord vs tenant)
+- Rent increase restrictions
+- Their right to renew
+
+## ⚠️ MISSING CLAUSES
+Key protections that should be in their contract but may be absent. Flag these as negotiating points.
+
+## 🔧 MAINTENANCE RESPONSIBILITIES
+Clear breakdown of what landlord must maintain vs tenant responsibility under UAE law.
+
+## 📋 ACTION PLAN
+Step-by-step: what they should do before signing, what to negotiate, what to refuse, and how to escalate if needed (RERA, rent disputes tribunal).
+
+## 📞 ESCALATION OPTIONS
+If things go wrong: RERA dispute centre, rental dispute settlement centre, DLD — exact process.
+
+Be specific about laws and penalties. Cite actual article numbers where possible.`
+},
+{
+  id:'legal', icon:'⚖️', name:'Legal Letter Generator',
+  desc:'Describe your UAE legal situation and receive a professionally drafted, law-referenced formal letter ready to send — employment disputes, landlord issues, unpaid money and more.',
+  price:'AED 30', tags:['Formal Letter','UAE Law','Disputes','MOHRE','RERA'],
+  questions:[
+    {k:'letter_type', l:'What type of letter do you need?', t:'opts',
+     o:['Demand for unpaid salary / wages','Security deposit refund demand','Eviction dispute / notice to vacate','Wrongful termination dispute','NOC (No Objection Certificate) request','End of service gratuity demand','Breach of contract notice','Complaint against employer','Complaint against landlord','Demand for unpaid invoices (business)','Response to false accusations','Other — I\'ll describe']},
+    {k:'sender', l:'Full name of the sender (you or your company):', t:'text', p:'e.g. Ahmed Al-Rashidi or Bright Future Trading LLC'},
+    {k:'recipient', l:'Who is the letter addressed to?', t:'text', p:'e.g. HR Manager, Emirates Properties LLC, landlord name...'},
+    {k:'situation', l:'Describe your situation in as much detail as possible:', t:'ta',
+     p:'Include: what happened, dates, amounts involved, what you\'ve already tried, any previous communication. The more detail, the better your letter.'},
+    {k:'amount', l:'Is there a specific amount of money involved?', t:'text', p:'e.g. AED 15,000 unpaid salary for March 2026, or N/A'},
+    {k:'outcome', l:'What exact outcome do you want from this letter?', t:'text', p:'e.g. Full refund of AED 8,000 deposit within 7 days, reinstatement to position, payment of 3 months gratuity...'},
+    {k:'urgency', l:'How urgent is this situation?', t:'opts',
+     o:['Critical — legal deadline approaching','Urgent — need resolution within 1–2 weeks','Normal — within 1 month','Low — exploring options']},
+  ],
+  system:`You are a senior UAE legal professional and letter-writing expert with expertise in UAE Labour Law (Federal Decree-Law No. 33 of 2021), Dubai Tenancy Law No. 26 of 2007, UAE Civil Transactions Law, DIFC and ADGM regulations, and UAE Commercial Law.
+
+Produce TWO deliverables:
+
+## PART 1: LEGAL LETTER
+
+Write a complete, professional formal letter that is:
+- In formal UAE legal English
+- Properly structured with all necessary components
+- Firmly assertive but professional in tone
+- Referenced to specific UAE laws and articles
+- Clear about facts, grievance, demanded remedy, and consequences
+- Ready to send with minimal editing
+
+FORMAT THE LETTER EXACTLY AS:
+
+---
+[City], [Date]
+
+[Sender Name]
+[Sender Address / contact]
+
+[Recipient Name / Title]
+[Recipient Company]
+[Recipient Address]
+
+**RE: [Clear Subject Line in Bold]**
+
+Dear [Sir/Madam/Name],
+
+**FORMAL NOTICE OF [TYPE]**
+
+[Opening paragraph: state who you are and the purpose of this letter]
+
+[Background paragraphs: factual chronological account of events with dates]
+
+[Legal basis paragraph: cite specific UAE laws/articles that support their position]
+
+[Demand paragraph: clearly state exact remedy demanded with specific deadline]
+
+[Consequence paragraph: state escalation steps if demand not met — MOHRE, RERA, courts, police if applicable]
+
+[Closing paragraph]
+
+Yours faithfully,
+
+[Sender Name]
+[Date]
+---
+
+## PART 2: LEGAL BRIEFING NOTE
+
+After the letter, provide:
+
+**Your Legal Position:** How strong is their case on a scale of 1-10 and why.
+
+**Relevant UAE Laws:** List the 3-5 most important laws/articles protecting them.
+
+**Evidence to Gather:** What documents, screenshots, witnesses they should collect now.
+
+**Escalation Path:** Step-by-step if the letter is ignored:
+1. First action (e.g. file with MOHRE online)
+2. Second action
+3. Third action (courts)
+Timeline and costs for each step.
+
+**Likely Outcomes:** Realistic assessment of what they can expect.
+
+Write the letter as if you are charging AED 2,500 for this service. Make it count.`
+}
+];
+
+// ─── RENDER TOOL CARDS ────────────────────────────────────────────────────────
+const grid = document.getElementById('toolsGrid');
+TOOLS.forEach(tool => {
+  const c = document.createElement('div');
+  c.className = 'tool-card';
+  c.innerHTML = `
+    <span class="tool-icon">${tool.icon}</span>
+    <div class="tool-name">${tool.name}</div>
+    <div class="tool-desc">${tool.desc}</div>
+    <div class="tool-tags">${tool.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+    <div class="tool-footer">
+      <span class="price-badge">${tool.price}</span>
+      <span class="tool-arrow">→</span>
+    </div>`;
+  c.onclick = () => openTool(tool);
+  grid.appendChild(c);
+});
+
+// ─── TOOL MODAL ───────────────────────────────────────────────────────────────
+function openTool(tool) {
+  if (!API_KEY) { openApiModal(); return; }
+  currentTool = tool; answers = {}; currentQ = 0;
+  chatHistory = []; reportContent = '';
+  toolSystemPrompt = tool.system;
+  document.getElementById('toolOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderHead(tool);
+  renderPayGate(tool);
+}
+function closeToolModal(e) { if(e.target===document.getElementById('toolOverlay')) closeToolDirect(); }
+function closeToolDirect() {
+  document.getElementById('toolOverlay').classList.remove('open');
   document.body.style.overflow = '';
 }
 
-// ── Payment gate ──────────────────────────────────────────────────────────────
-function renderPayGate(tool) {
-  document.getElementById('modalContent').innerHTML = `
+function renderHead(tool) {
+  document.getElementById('modalHead').innerHTML = `
+    <button class="modal-close" onclick="closeToolDirect()">✕</button>
     <div class="modal-title">${tool.icon} ${tool.name}</div>
-    <div class="modal-subtitle">${tool.desc}</div>
-    <div class="pay-gate">
-      <div class="pay-price">${tool.price} <span>one-time</span></div>
-      <p>Pay once, get your personalised AI analysis instantly.<br/>No subscription. No hidden fees.</p>
-      <button class="btn-gold" style="width:100%;padding:16px;" onclick="simulatePay()">
-        Pay ${tool.price} & Continue →
+    <div class="modal-sub">Personalised AI analysis with downloadable PDF report</div>`;
+}
+
+// ─── PAY GATE ─────────────────────────────────────────────────────────────────
+function renderPayGate(tool) {
+  document.getElementById('modalBody').innerHTML = `
+    <div class="pay-box">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em;font-weight:700">One-Time Fee</div>
+      <div class="pay-price">${tool.price}</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:20px">No subscription · No hidden fees</div>
+      <div class="pay-includes">
+        <div class="pay-inc-item">Personalised AI analysis of YOUR specific situation</div>
+        <div class="pay-inc-item">Detailed report with real UAE 2026 data and laws</div>
+        <div class="pay-inc-item">Downloadable professional PDF report</div>
+        <div class="pay-inc-item">Unlimited follow-up questions in session</div>
+        <div class="pay-inc-item">Actionable next steps you can use today</div>
+      </div>
+      <button class="btn btn-gold" style="width:100%;padding:16px;font-size:14px" onclick="simulatePay()">
+        Pay ${tool.price} & Start →
       </button>
     </div>
-    <div class="notice">🔒 Payments processed securely via Stripe. This tool provides AI-generated guidance — not legal or financial advice. Always verify with qualified professionals.</div>`;
+    <div class="notice">🔒 Secure payment via Gumroad/PayPal. Results are AI-generated expert guidance — not a substitute for qualified legal or financial advice. Always verify with UAE government sources.</div>`;
 }
 
-function simulatePay() {
-  // In production: replace with Stripe Checkout redirect
-  // window.location.href = '/api/checkout?tool=' + currentTool.id;
-  paid = true;
-  renderQuestions();
-}
+function simulatePay() { renderQuestion(); } // In production: redirect to Gumroad first
 
-// ── Question flow ─────────────────────────────────────────────────────────────
-function renderQuestions() {
+// ─── QUESTIONS ────────────────────────────────────────────────────────────────
+function renderQuestion() {
   const q = currentTool.questions[currentQ];
   const total = currentTool.questions.length;
-  const progress = Math.round(((currentQ) / total) * 100);
+  const pct = Math.round((currentQ / total) * 100);
 
   let inputHTML = '';
-  if (q.type === 'options') {
-    inputHTML = `<div class="q-options" id="qOpts">
-      ${q.opts.map(o => `<div class="q-opt" onclick="selectOpt(this,'${o.replace(/'/g,"\\'")}','${q.key}')">${o}</div>`).join('')}
-    </div>`;
-  } else if (q.type === 'text') {
-    inputHTML = `<input class="q-input" id="qText" type="text" placeholder="${q.placeholder||''}" />`;
-  } else if (q.type === 'textarea') {
-    inputHTML = `<textarea class="q-input" id="qText" rows="4" placeholder="${q.placeholder||''}"></textarea>`;
+  if (q.t === 'opts') {
+    inputHTML = `<div class="q-opts" id="qOpts">${q.o.map(o =>
+      `<div class="q-opt" onclick="pickOpt(this,'${q.k}','${o.replace(/'/g,"\\'")}')">${o}</div>`
+    ).join('')}</div>`;
+  } else if (q.t === 'ta') {
+    inputHTML = `<textarea class="q-ta" id="qInp" rows="5" placeholder="${q.p||''}"></textarea>`;
+  } else {
+    inputHTML = `<input class="q-input" id="qInp" type="text" placeholder="${q.p||''}"/>`;
   }
 
-  document.getElementById('modalContent').innerHTML = `
-    <div class="modal-title">${currentTool.icon} ${currentTool.name}</div>
-    <div style="margin-bottom:20px;">
-      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px;">
-        <span>Question ${currentQ+1} of ${total}</span><span>${progress}% complete</span>
-      </div>
-      <div style="height:3px;background:rgba(255,255,255,0.08);border-radius:2px;">
-        <div style="height:100%;width:${progress}%;background:var(--gold);border-radius:2px;transition:width .3s;"></div>
-      </div>
-    </div>
-    <div class="q-step">
-      <div class="q-label">${q.label}</div>
-      ${inputHTML}
-    </div>
-    <div style="display:flex;justify-content:flex-end;margin-top:8px;">
-      <button class="btn-gold" id="nextBtn" onclick="nextQuestion('${q.key}','${q.type}')">
-        ${currentQ < total-1 ? 'Next →' : 'Get My Answer →'}
-      </button>
+  document.getElementById('modalBody').innerHTML = `
+    <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
+    <div class="prog-info"><span>Question ${currentQ+1} of ${total}</span><span>${pct}% done</span></div>
+    <div class="q-label">${q.l}</div>
+    ${inputHTML}
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px">
+      ${currentQ>0?`<button class="btn btn-outline btn-sm" onclick="goBack()">← Back</button>`:`<span></span>`}
+      ${q.t!=='opts'?`<button class="btn btn-gold" onclick="nextQ('${q.k}','${q.t}')">
+        ${currentQ<total-1?'Continue →':'Generate My Report →'}
+      </button>`:'<span></span>'}
     </div>`;
 
-  // auto-advance on option select
-  if (q.type !== 'options') {
-    const input = document.getElementById('qText');
-    if (input) input.addEventListener('keydown', e => {
-      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); nextQuestion(q.key, q.type); }
+  if (q.t !== 'opts') {
+    const inp = document.getElementById('qInp');
+    if (inp) inp.addEventListener('keydown', e => {
+      if (e.key==='Enter' && !e.shiftKey && q.t!=='ta') { e.preventDefault(); nextQ(q.k,q.t); }
     });
+    if (inp && answers[q.k]) inp.value = answers[q.k];
   }
 }
 
-function selectOpt(el, value, key) {
-  document.querySelectorAll('.q-opt').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
-  answers[key] = value;
-  // short delay then auto-advance
-  setTimeout(() => nextQuestion(key, 'options'), 300);
+function pickOpt(el, key, val) {
+  document.querySelectorAll('.q-opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+  answers[key] = val;
+  setTimeout(() => nextQ(key,'opts'), 280);
 }
 
-function nextQuestion(key, type) {
-  if (type !== 'options') {
-    const el = document.getElementById('qText');
-    if (!el || !el.value.trim()) { el && (el.style.borderColor='var(--gold)'); return; }
+function nextQ(key, type) {
+  if (type !== 'opts') {
+    const el = document.getElementById('qInp');
+    if (!el?.value?.trim()) { if(el){el.style.borderColor='var(--gold)';el.focus();}return; }
     answers[key] = el.value.trim();
   }
   if (!answers[key]) return;
   currentQ++;
-  if (currentQ < currentTool.questions.length) {
-    renderQuestions();
-  } else {
-    renderChat();
-  }
+  if (currentQ < currentTool.questions.length) renderQuestion();
+  else renderChat();
 }
 
-// ── Chat / AI result ──────────────────────────────────────────────────────────
+function goBack() { if(currentQ>0){currentQ--;renderQuestion();} }
+
+// ─── CHAT & AI ────────────────────────────────────────────────────────────────
 function renderChat() {
-  document.getElementById('modalContent').innerHTML = `
-    <div class="modal-title">${currentTool.icon} ${currentTool.name}</div>
-    <div class="modal-subtitle">Analysing your situation...</div>
+  document.getElementById('modalBody').innerHTML = `
     <div class="chat-box" id="chatBox">
       <div class="msg ai">
-        <div class="msg-avatar">🇦🇪</div>
-        <div class="msg-bubble">Got it! Let me analyse your situation and prepare your personalised report...</div>
+        <div class="av">🇦🇪</div>
+        <div class="bubble">Excellent. I have all the information I need. Preparing your personalised analysis — this will take about 30 seconds...</div>
       </div>
-      <div class="msg ai" id="typingMsg">
-        <div class="msg-avatar">🇦🇪</div>
-        <div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>
+      <div class="msg ai" id="typingRow">
+        <div class="av">🇦🇪</div>
+        <div class="bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>
       </div>
     </div>
-    <div class="input-row">
-      <textarea class="chat-input" id="chatInput" rows="2" placeholder="Ask a follow-up question..." disabled></textarea>
+    <div class="input-row" style="margin-bottom:10px">
+      <textarea class="chat-in" id="chatIn" rows="2" placeholder="Ask a follow-up question..." disabled></textarea>
       <button class="send-btn" id="sendBtn" onclick="sendFollowUp()" disabled>Send</button>
     </div>
-    <div style="display:flex;gap:10px;margin-bottom:12px" id="reportBtns" style="display:none">
-      <button class="btn-gold" style="flex:1;padding:10px;font-size:12px" onclick="downloadPDF()">📄 Download PDF Report</button>
-      <button class="btn-outline" style="flex:1;padding:10px;font-size:12px" onclick="copyReport()">📋 Copy Report</button>
-    </div>
-    <div class="notice">🔒 AI-generated guidance based on 2026 UAE data. Not legal, financial or immigration advice. Verify with official UAE sources (mohre.gov.ae, ica.gov.ae, rera.gov.ae).</div>`;
+    <div id="reportBtnContainer"></div>
+    <div class="notice">AI-generated expert guidance based on UAE 2026 laws and market data. Not a substitute for qualified professional advice.</div>`;
 
-  // Build context from answers
-  const ctx = currentTool.questions.map(q => `${q.label}: ${answers[q.key] || 'Not provided'}`).join('\n');
-  callClaude(currentTool.systemPrompt + "\n\nUAE KNOWLEDGE BASE 2026:\n- Mainland LLC: 100% foreign ownership now allowed in most sectors (2021 reform). DED licence from AED 15,000-25,000/yr.\n- Freezones: 100% foreign owned. IFZA from AED 12,900/yr, RAK ICC from AED 5,750/yr, DMCC from AED 15,000/yr, Shams from AED 5,500/yr\n- Golden Visa: Property AED 2M+, salary AED 30k/month in strategic sectors, 10-year renewable\n- Green Visa: 5yr self-sponsored, bachelor degree + AED 15k/month or freelance AED 360k/yr\n- Salaries 2026: Software Engineer mid AED 18-30k, Marketing Manager mid AED 16-26k, Accountant mid AED 9-16k\n- Dubai rent 2026: 1BR apartment AED 65-120k/yr, Studio AED 35-65k/yr\n- Gratuity: 21 days/year first 5 years, 30 days/year after 5 years, based on final basic salary\n- RERA max rent increase: 5-20% depending on how far below market the current rent is\n- Labour Law: Federal Law No. 33 of 2021, notice period min 30 days, wrongful termination = 3 months compensation", `Here are my details:\n\n${ctx}\n\nPlease provide my personalised analysis.`);
+  const ctx = currentTool.questions.map(q=>`${q.l}\nAnswer: ${answers[q.k]||'Not provided'}`).join('\n\n');
+  const prompt = `Here are my full details:\n\n${ctx}\n\nPlease provide my complete personalised analysis and report. Be thorough, specific with real numbers, and highly actionable.`;
+  callAI(prompt, true);
 }
 
-const conversationHistory = [];
-
-async function callClaude(systemPrompt + "\n\nUAE KNOWLEDGE BASE 2026:\n- Mainland LLC: 100% foreign ownership now allowed in most sectors (2021 reform). DED licence from AED 15,000-25,000/yr.\n- Freezones: 100% foreign owned. IFZA from AED 12,900/yr, RAK ICC from AED 5,750/yr, DMCC from AED 15,000/yr, Shams from AED 5,500/yr\n- Golden Visa: Property AED 2M+, salary AED 30k/month in strategic sectors, 10-year renewable\n- Green Visa: 5yr self-sponsored, bachelor degree + AED 15k/month or freelance AED 360k/yr\n- Salaries 2026: Software Engineer mid AED 18-30k, Marketing Manager mid AED 16-26k, Accountant mid AED 9-16k\n- Dubai rent 2026: 1BR apartment AED 65-120k/yr, Studio AED 35-65k/yr\n- Gratuity: 21 days/year first 5 years, 30 days/year after 5 years, based on final basic salary\n- RERA max rent increase: 5-20% depending on how far below market the current rent is\n- Labour Law: Federal Law No. 33 of 2021, notice period min 30 days, wrongful termination = 3 months compensation", userMsg) {
-  conversationHistory.push({ role: "user", content: userMsg });
-
-  const apiKey = localStorage.getItem('uae_assist_key') || '';
-  if (!apiKey) {
-    displayAIMessage("⚠️ No API key found. Please add your Anthropic API key using the setup panel above.");
-    return;
-  }
+async function callAI(userMsg, isFirst=false) {
+  chatHistory.push({role:'user', content:userMsg});
   try {
-    const res = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { 
-        "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
-        "anthropic-dangerous-direct-browser-access": "true"
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 2000,
-        system: systemPrompt + "\n\nUAE KNOWLEDGE BASE 2026:\n- Mainland LLC: 100% foreign ownership now allowed in most sectors (2021 reform). DED licence from AED 15,000-25,000/yr.\n- Freezones: 100% foreign owned. IFZA from AED 12,900/yr, RAK ICC from AED 5,750/yr, DMCC from AED 15,000/yr, Shams from AED 5,500/yr\n- Golden Visa: Property AED 2M+, salary AED 30k/month in strategic sectors, 10-year renewable\n- Green Visa: 5yr self-sponsored, bachelor degree + AED 15k/month or freelance AED 360k/yr\n- Salaries 2026: Software Engineer mid AED 18-30k, Marketing Manager mid AED 16-26k, Accountant mid AED 9-16k\n- Dubai rent 2026: 1BR apartment AED 65-120k/yr, Studio AED 35-65k/yr\n- Gratuity: 21 days/year first 5 years, 30 days/year after 5 years, based on final basic salary\n- RERA max rent increase: 5-20% depending on how far below market the current rent is\n- Labour Law: Federal Law No. 33 of 2021, notice period min 30 days, wrongful termination = 3 months compensation",
-        messages: conversationHistory,
-      })
-    });
+    // Build Gemini contents array — inject system prompt as first user/model turn
+    const geminiContents = [
+      {role:'user', parts:[{text: toolSystemPrompt + '\n\nUnderstood. I am ready to help UAE residents with expert, specific, law-referenced guidance. Please share the user\'s details.'}]},
+      {role:'model', parts:[{text:'Understood. I am a UAE expert assistant. Please provide the user\'s details and I will generate a comprehensive, personalised report with specific numbers, UAE law references, and actionable next steps.'}]},
+      ...chatHistory.map(m=>({
+        role: m.role==='assistant'?'model':'user',
+        parts:[{text:m.content}]
+      }))
+    ];
+
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
+      {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          contents: geminiContents,
+          generationConfig:{
+            maxOutputTokens:2000,
+            temperature:0.7,
+            topP:0.9
+          },
+          safetySettings:[
+            {category:'HARM_CATEGORY_HARASSMENT',threshold:'BLOCK_NONE'},
+            {category:'HARM_CATEGORY_HATE_SPEECH',threshold:'BLOCK_NONE'},
+            {category:'HARM_CATEGORY_SEXUALLY_EXPLICIT',threshold:'BLOCK_NONE'},
+            {category:'HARM_CATEGORY_DANGEROUS_CONTENT',threshold:'BLOCK_NONE'}
+          ]
+        })
+      }
+    );
     if (!res.ok) {
       const err = await res.json();
-      throw new Error(err.error?.message || "API error " + res.status);
+      throw new Error(err.error?.message || `HTTP ${res.status}`);
     }
     const data = await res.json();
-    const reply = data.content?.[0]?.text || "No response received.";
-    conversationHistory.push({ role: "assistant", content: reply });
-    fullReport += (fullReport ? "\n\n" : "") + reply;
-    displayAIMessage(reply);
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Unable to generate response.';
+    chatHistory.push({role:'assistant', content:reply});
+    if (isFirst) reportContent = reply;
+    showAIMsg(reply, isFirst);
   } catch(e) {
-    displayAIMessage("⚠️ Error: " + e.message + ". Please check your API key.");
+    showError(e.message);
   }
 }
 
-function displayAIMessage(text) {
-  fullReport += (fullReport ? '\n\n' : '') + text;
-  const reportBtns = document.getElementById('reportBtns');
-  if (reportBtns) reportBtns.style.display = 'flex';
-  const typing = document.getElementById('typingMsg');
-  if (typing) typing.remove();
+function showAIMsg(text, isFirst) {
+  document.getElementById('typingRow')?.remove();
+  const box = document.getElementById('chatBox');
+  if (!box) return;
 
-  const chatBox = document.getElementById('chatBox');
-  if (!chatBox) return;
+  const div = document.createElement('div');
+  div.className = 'msg ai';
+  div.innerHTML = `<div class="av">🇦🇪</div><div class="bubble">${formatMsg(text)}</div>`;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
 
-  const msg = document.createElement('div');
-  msg.className = 'msg ai';
-
-  // Format markdown-like text
-  const formatted = text
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/^(\d+\.\s)/gm, '<br/>$1')
-    .replace(/^(#{1,3}\s)(.*)/gm, '<br/><strong style="color:var(--gold-light)">$2</strong>')
-    .replace(/\n/g, '<br/>');
-
-  msg.innerHTML = `
-    <div class="msg-avatar">🇦🇪</div>
-    <div class="msg-bubble">${formatted}</div>`;
-  chatBox.appendChild(msg);
-  chatBox.scrollTop = chatBox.scrollHeight;
-
-  // Enable follow-up
-  const input = document.getElementById('chatInput');
+  const inp = document.getElementById('chatIn');
   const btn = document.getElementById('sendBtn');
-  if (input) { input.disabled = false; input.focus(); }
+  if (inp) { inp.disabled=false; inp.focus(); }
   if (btn) btn.disabled = false;
+
+  if (isFirst) {
+    const rc = document.getElementById('reportBtnContainer');
+    if (rc) rc.innerHTML = `
+      <button class="report-btn" onclick="downloadReport()">
+        <span class="report-btn-icon">📄</span>
+        <div class="report-btn-text">
+          <strong>Download Full Report as PDF</strong>
+          <span>Save your complete personalised analysis as a professional PDF document</span>
+        </div>
+      </button>`;
+  }
+}
+
+function showError(msg) {
+  document.getElementById('typingRow')?.remove();
+  const box = document.getElementById('chatBox');
+  if (!box) return;
+  const div = document.createElement('div');
+  div.className = 'msg ai';
+  div.innerHTML = `<div class="av">⚠️</div><div class="bubble" style="border-color:rgba(204,0,1,.3)">
+    <strong style="color:#e74c3c">Error: ${msg}</strong><br/>
+    ${msg.includes('API_KEY_INVALID')||msg.includes('400')||msg.includes('401') ? 'Your Gemini API key is invalid. <span style="color:var(--gold);cursor:pointer" onclick="openApiModal()">Update key →</span>' :
+      msg.includes('quota')||msg.includes('429') ? 'Free daily limit reached. Resets at midnight — try again tomorrow or get a new key at aistudio.google.com.' : msg.includes('503') ? 'AI temporarily busy. Wait 30 seconds and retry.' :
+      'Please check your internet connection and try again. If the problem persists, update your API key.'}
+  </div>`;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+}
+
+function formatMsg(text) {
+  return text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/^## (.+)$/gm,'<h4>$1</h4>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/^- (.+)$/gm,'• $1')
+    .replace(/^(\d+)\. (.+)$/gm,'<br/><strong style="color:var(--gold-l)">$1.</strong> $2')
+    .replace(/\n{2,}/g,'<br/><br/>').replace(/\n/g,'<br/>');
 }
 
 async function sendFollowUp() {
-  const input = document.getElementById('chatInput');
-  const msg = input?.value?.trim();
+  const inp = document.getElementById('chatIn');
+  const msg = inp?.value?.trim();
   if (!msg) return;
 
-  const chatBox = document.getElementById('chatBox');
-  const userMsg = document.createElement('div');
-  userMsg.className = 'msg user';
-  userMsg.innerHTML = `<div class="msg-avatar">👤</div><div class="msg-bubble">${msg}</div>`;
-  chatBox.appendChild(userMsg);
-  input.value = '';
-  chatBox.scrollTop = chatBox.scrollHeight;
+  const box = document.getElementById('chatBox');
+  const uDiv = document.createElement('div');
+  uDiv.className = 'msg user';
+  uDiv.innerHTML = `<div class="av">👤</div><div class="bubble">${msg.replace(/</g,'&lt;')}</div>`;
+  box.appendChild(uDiv);
 
-  // Add typing indicator
   const typing = document.createElement('div');
-  typing.className = 'msg ai'; typing.id = 'typingMsg';
-  typing.innerHTML = `<div class="msg-avatar">🇦🇪</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
-  chatBox.appendChild(typing);
-  chatBox.scrollTop = chatBox.scrollHeight;
+  typing.className = 'msg ai'; typing.id = 'typingRow';
+  typing.innerHTML = `<div class="av">🇦🇪</div><div class="bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+  box.appendChild(typing);
+  box.scrollTop = box.scrollHeight;
 
+  inp.value = '';
+  inp.disabled = true;
   document.getElementById('sendBtn').disabled = true;
-  input.disabled = true;
-
-  await callClaude(currentTool.systemPrompt + "\n\nUAE KNOWLEDGE BASE 2026:\n- Mainland LLC: 100% foreign ownership now allowed in most sectors (2021 reform). DED licence from AED 15,000-25,000/yr.\n- Freezones: 100% foreign owned. IFZA from AED 12,900/yr, RAK ICC from AED 5,750/yr, DMCC from AED 15,000/yr, Shams from AED 5,500/yr\n- Golden Visa: Property AED 2M+, salary AED 30k/month in strategic sectors, 10-year renewable\n- Green Visa: 5yr self-sponsored, bachelor degree + AED 15k/month or freelance AED 360k/yr\n- Salaries 2026: Software Engineer mid AED 18-30k, Marketing Manager mid AED 16-26k, Accountant mid AED 9-16k\n- Dubai rent 2026: 1BR apartment AED 65-120k/yr, Studio AED 35-65k/yr\n- Gratuity: 21 days/year first 5 years, 30 days/year after 5 years, based on final basic salary\n- RERA max rent increase: 5-20% depending on how far below market the current rent is\n- Labour Law: Federal Law No. 33 of 2021, notice period min 30 days, wrongful termination = 3 months compensation", msg);
+  await callAI(msg, false);
+  inp.disabled = false;
   document.getElementById('sendBtn').disabled = false;
-  input.disabled = false;
+  inp.focus();
 }
 
-function scrollToTools() { document.getElementById('tools').scrollIntoView({behavior:'smooth'}); }
+// ─── PDF REPORT ───────────────────────────────────────────────────────────────
+function downloadReport() {
+  const d = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
+  const toolName = currentTool.name;
+  const summaryAnswers = currentTool.questions.map(q=>`<tr><td style="padding:6px 12px;color:#8A8070;font-size:12px;border-bottom:1px solid #1E2E48;width:35%">${q.l}</td><td style="padding:6px 12px;font-size:12px;border-bottom:1px solid #1E2E48">${answers[q.k]||'—'}</td></tr>`).join('');
 
-// ── PDF Generation ────────────────────────────────────────────────────────────
-async function downloadPDF() {
-  const script = document.createElement('script');
-  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-  script.onload = () => generatePDF();
-  document.head.appendChild(script);
-  if (window.jspdf) generatePDF();
+  const cleaned = reportContent
+    .replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>')
+    .replace(/## (.+)/g,'<h2 style="color:#C9A84C;font-size:16px;margin:24px 0 8px;padding-bottom:6px;border-bottom:1px solid rgba(201,168,76,0.3)">$1</h2>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/^- (.+)$/gm,'<li style="margin-bottom:4px">$1</li>')
+    .replace(/^(\d+)\. (.+)$/gm,'<li style="margin-bottom:6px"><strong style="color:#C9A84C">$1.</strong> $2</li>')
+    .replace(/\n{2,}/g,'</p><p style="margin-bottom:12px">').replace(/\n/g,'<br/>');
+
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"/>
+<style>
+  body{font-family:Georgia,serif;background:#fff;color:#1a1a1a;margin:0;padding:0}
+  .cover{background:linear-gradient(135deg,#060E1A,#0A1628);color:#F5F0E8;padding:60px 50px;min-height:220px}
+  .cover-flag{display:flex;height:6px;margin-bottom:30px}
+  .cover-flag span:nth-child(1){background:#CC0001;flex:1}
+  .cover-flag span:nth-child(2){background:#111;flex:1}
+  .cover-flag span:nth-child(3){background:#fff;flex:1}
+  .cover-flag span:nth-child(4){background:#006400;flex:1}
+  .cover h1{font-size:28px;color:#C9A84C;margin:0 0 8px}
+  .cover h2{font-size:18px;font-weight:400;margin:0 0 20px;opacity:.8}
+  .cover-meta{font-size:12px;opacity:.6;line-height:2}
+  .body{padding:40px 50px}
+  .info-table{width:100%;border-collapse:collapse;margin-bottom:30px;background:#f9f8f6;border-radius:8px;overflow:hidden}
+  .info-table th{background:#0A1628;color:#C9A84C;padding:10px 12px;font-size:12px;text-align:left;letter-spacing:.06em}
+  p{font-size:13px;line-height:1.8;margin-bottom:12px}
+  h2{color:#C9A84C;font-size:16px;margin:28px 0 8px;padding-bottom:6px;border-bottom:2px solid rgba(201,168,76,0.3)}
+  li{font-size:13px;line-height:1.8;margin-bottom:4px}
+  ul,ol{padding-left:20px;margin-bottom:12px}
+  .footer{border-top:1px solid #eee;padding:20px 50px;font-size:10px;color:#999;text-align:center}
+  @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style></head><body>
+<div class="cover">
+  <div class="cover-flag"><span></span><span></span><span></span><span></span></div>
+  <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#EDD98A;margin-bottom:12px">UAE ASSIST · POWERED BY GEMINI AI</div>
+  <h1>${toolName}</h1>
+  <h2>Expert AI Analysis — Your Personalised Results</h2>
+  <div class="cover-meta">
+    Generated: ${d}<br/>
+    Reference: UAE-${Date.now().toString(36).toUpperCase()}<br/>
+    Powered by Claude AI · UAE 2026 Data
+  </div>
+</div>
+<div class="body">
+  <h2>Your Information</h2>
+  <table class="info-table"><thead><tr><th>Question</th><th>Your Answer</th></tr></thead><tbody>${summaryAnswers}</tbody></table>
+  <h2>Your Personalised Analysis</h2>
+  <p>${cleaned}</p>
+  <div style="background:#f9f8f6;border-left:4px solid #C9A84C;padding:16px 20px;margin-top:30px;border-radius:0 8px 8px 0">
+    <strong style="font-size:12px;color:#C9A84C">IMPORTANT DISCLAIMER</strong><br/>
+    <span style="font-size:11px;color:#666;line-height:1.7">This report provides AI-generated expert guidance based on UAE laws and market data current as of 2026. It is not legal or financial advice. Laws and regulations change — always verify with qualified UAE legal, financial, or immigration professionals and official government sources (ica.gov.ae · mohre.gov.ae · rta.ae · rera.gov.ae · doe.gov.ae).</span>
+  </div>
+</div>
+<div class="footer">UAE Assist · Expert AI Tools for Life in the UAE · uaeassist.vercel.app<br/>Report generated ${d} · For personal use only · Not for redistribution</div>
+</body></html>`;
+
+  const w = window.open('','_blank');
+  w.document.write(html);
+  w.document.close();
+  setTimeout(()=>w.print(), 600);
 }
 
-function generatePDF() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-  const W = 210, M = 20, lh = 5.8; let y = M;
-  doc.setFillColor(10,22,40); doc.rect(0,0,W,42,'F');
-  doc.setFillColor(201,168,76); doc.rect(0,40,W,2,'F');
-  doc.setTextColor(201,168,76); doc.setFontSize(22); doc.setFont('helvetica','bold');
-  doc.text('UAE ASSIST', M, 18);
-  doc.setFontSize(12); doc.setFont('helvetica','normal'); doc.setTextColor(180,160,110);
-  doc.text((currentTool.name + ' — PERSONALISED REPORT').toUpperCase(), M, 28);
-  doc.setFontSize(8); doc.setTextColor(120,105,80);
-  doc.text('Generated: ' + new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}), M, 36);
-  y = 52;
-  doc.setFillColor(240,235,222); doc.rect(M,y,W-M*2,7,'F');
-  doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(10,22,40);
-  doc.text('YOUR DETAILS', M+2, y+5); y += 11;
-  if (currentTool && answers) {
-    currentTool.questions.forEach(q => {
-      if (answers[q.key]) {
-        if(y>272){doc.addPage();y=M}
-        doc.setFontSize(8);doc.setFont('helvetica','bold');doc.setTextColor(120,90,20);
-        doc.text(q.label,M,y);y+=4.5;
-        doc.setFont('helvetica','normal');doc.setTextColor(40,40,40);
-        doc.splitTextToSize(answers[q.key],W-M*2-4).forEach(l=>{if(y>272){doc.addPage();y=M};doc.text('  '+l,M,y);y+=4.5});
-        y+=2;
-      }
-    });
-  }
-  y += 6;
-  if(y>270){doc.addPage();y=M}
-  doc.setFillColor(10,22,40); doc.rect(M,y,W-M*2,7,'F');
-  doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(201,168,76);
-  doc.text('PERSONALISED ANALYSIS', M+2, y+5); y += 13;
-  fullReport.replace(/## /g,'\n## ').replace(/\*\*/g,'').replace(/\*/g,'').split('\n').forEach(line => {
-    if(y>275){doc.addPage();y=M}
-    const l = line.trim(); if(!l){y+=2;return}
-    if(l.startsWith('## ')){
-      y+=3;doc.setFillColor(245,238,215);doc.rect(M,y-4,W-M*2,8,'F');
-      doc.setTextColor(140,96,32);doc.setFontSize(10);doc.setFont('helvetica','bold');
-      doc.text(l.replace('## ',''),M+2,y+1);y+=9;
-    } else {
-      doc.setTextColor(40,40,40);doc.setFontSize(8.5);doc.setFont('helvetica','normal');
-      doc.splitTextToSize(l,W-M*2).forEach(wl=>{if(y>275){doc.addPage();y=M};doc.text(wl,M,y);y+=lh});
-    }
-  });
-  const pages = doc.getNumberOfPages();
-  for(let i=1;i<=pages;i++){
-    doc.setPage(i);doc.setFillColor(10,22,40);doc.rect(0,287,W,10,'F');
-    doc.setTextColor(120,110,90);doc.setFontSize(7);doc.setFont('helvetica','normal');
-    doc.text('UAE Assist · AI-Generated Guidance · Not Legal or Financial Advice',M,293);
-    doc.text('Page '+i+' of '+pages,W-M,293,{align:'right'});
-  }
-  doc.save('UAE_Assist_Report.pdf');
-}
-
-function copyReport() {
-  navigator.clipboard.writeText(fullReport).then(() => alert('✅ Report copied to clipboard!'));
-}
-function scrollToHow() { document.getElementById('how').scrollIntoView({behavior:'smooth'}); }
+// ─── API MODAL HELPERS ────────────────────────────────────────────────────────
+function closeApiModal(e){ if(e.target===document.getElementById('apiOverlay'))closeApiModalDirect(); }
 </script>
 </body>
 </html>
