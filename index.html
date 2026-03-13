@@ -268,13 +268,13 @@ footer strong{color:var(--white)}
 
 <nav>
   <div class="logo">🇦🇪 UAE Assist</div>
-  <div class="nav-r">
+    <div class="nav-r">
     <a href="#tools">Tools</a>
     <a href="#how">How It Works</a>
     <a href="#trust">Why Us</a>
-    <div class="api-pill" onclick="openApiModal()">
-      <div class="api-dot" id="apiDot"></div>
-      <span id="apiLabel">Connect AI</span>
+    <div class="api-pill" style="pointer-events:none">
+      <div class="api-dot ok"></div>
+      <span>AI Active</span>
     </div>
   </div>
 </nav>
@@ -362,22 +362,7 @@ footer strong{color:var(--white)}
   <span style="font-size:11px">Not legal or financial advice. Always verify with qualified UAE professionals and official government sources (ica.gov.ae · mohre.gov.ae · rta.ae · rera.gov.ae)</span></p>
 </footer>
 
-<!-- API KEY MODAL -->
-<div class="overlay" id="apiOverlay" onclick="closeApiModal(event)">
-  <div class="modal" style="max-width:480px" onclick="event.stopPropagation()">
-    <div class="api-modal-box">
-      <button class="modal-close" onclick="closeApiModalDirect()">✕</button>
-      <div style="font-size:32px;margin-bottom:16px">🔑</div>
-      <div class="modal-title">Connect Your AI</div>
-      <div class="modal-sub" style="margin-bottom:24px">Enter your free Google Gemini API key to power all tools. Your key is stored only in your browser — never on our servers.</div>
-      <input class="api-input" id="apiKeyInput" type="password" placeholder="AIzaSy..."/>
-      <button class="btn btn-gold" style="width:100%" onclick="saveApiKey()">Connect & Activate Tools</button>
-      <div class="notice" style="margin-top:16px">
-        Get your <strong style="color:var(--gold)">free</strong> API key at <a href="https://aistudio.google.com" target="_blank" style="color:var(--gold)">aistudio.google.com</a> → Get API Key → Create API Key. Completely free, no credit card needed.
-      </div>
-    </div>
-  </div>
-</div>
+<!-- API key is embedded -->
 
 <!-- TOOL MODAL -->
 <div class="overlay" id="toolOverlay" onclick="closeToolModal(event)">
@@ -389,34 +374,13 @@ footer strong{color:var(--white)}
 
 <script>
 // ─── STATE ────────────────────────────────────────────────────────────────────
-let API_KEY = localStorage.getItem('uae_api_key') || '';
+let API_KEY = 'AIzaSyD4BhwiH-v-bcfklp8FQC2ftzOr-d6E2eE';
 let currentTool = null, answers = {}, currentQ = 0;
 let chatHistory = [], toolSystemPrompt = '';
 let reportContent = '';
 
 // ─── API KEY ──────────────────────────────────────────────────────────────────
-function updateApiStatus() {
-  const dot = document.getElementById('apiDot');
-  const lbl = document.getElementById('apiLabel');
-  if (API_KEY) { dot.className = 'api-dot ok'; lbl.textContent = 'AI Connected'; }
-  else { dot.className = 'api-dot'; lbl.textContent = 'Connect AI'; }
-}
-function openApiModal() {
-  document.getElementById('apiKeyInput').value = API_KEY;
-  document.getElementById('apiOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeApiModal(e) { if(e.target===document.getElementById('apiOverlay')) closeApiModalDirect(); }
-function closeApiModalDirect() {
-  document.getElementById('apiOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-function saveApiKey() {
-  const k = document.getElementById('apiKeyInput').value.trim();
-  if (!k || k.length < 20) { alert('Please enter a valid Google Gemini API key'); return; }
-  API_KEY = k; localStorage.setItem('uae_api_key', k);
-  updateApiStatus(); closeApiModalDirect();
-}
+function updateApiStatus() {} // key is embedded
 updateApiStatus();
 
 // ─── TOOLS DATA ───────────────────────────────────────────────────────────────
@@ -793,7 +757,6 @@ TOOLS.forEach(tool => {
 
 // ─── TOOL MODAL ───────────────────────────────────────────────────────────────
 function openTool(tool) {
-  if (!API_KEY) { openApiModal(); return; }
   currentTool = tool; answers = {}; currentQ = 0;
   chatHistory = []; reportContent = '';
   toolSystemPrompt = tool.system;
