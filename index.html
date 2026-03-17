@@ -386,7 +386,7 @@ footer strong{color:var(--white)}
     <div style="text-align:center"><div class="stat-n">5</div><div class="stat-l">Expert AI Tools</div></div>
     <div style="text-align:center"><div class="stat-n">24/7</div><div class="stat-l">Always Available</div></div>
     <div style="text-align:center"><div class="stat-n">PDF</div><div class="stat-l">Downloadable Reports</div></div>
-    <div style="text-align:center"><div class="stat-n">AED 6</div><div class="stat-l">Starting Price</div></div>
+    <div style="text-align:center"><div class="stat-n">AED 10</div><div class="stat-l">Starting Price</div></div>
     <div style="text-align:center"><div class="stat-n">2026</div><div class="stat-l">Up-to-date Data</div></div>
   </div>
 </section>
@@ -557,6 +557,15 @@ const TOOLS = [
      o:['Yes — just for me','Yes — for me and family','Yes — for me and employees','No — I already have a visa','Not sure']},
     {k:'timeline', l:'When do you want to launch?', t:'opts',
      o:['As soon as possible (within 1 month)','1–3 months','3–6 months','Just researching for now']},
+    {k:'nationality', l:'What is your nationality?', t:'text', p:'e.g. British, Indian, Pakistani, American, Filipino...'},
+    {k:'bank', l:'Do you need a UAE business bank account?', t:'opts',
+     o:['Yes — essential for my business','Yes — but not immediately','No — I have international banking','Not sure yet']},
+    {k:'existing', l:'Do you already have any UAE business or visa history?', t:'opts',
+     o:['No — completely new to UAE business','Yes — I had a business before','Yes — I have a current employment visa','Yes — I have another freezone licence','Yes — I have a residency visa already']},
+    {k:'partners', l:'Will you have business partners or investors?', t:'opts',
+     o:['No — I am the sole owner','Yes — UAE national partner','Yes — foreign partner (non-UAE)','Yes — corporate investor','Still deciding']},
+    {k:'specific', l:'Anything specific you want advice on? Any concerns or special requirements?', t:'ta',
+     p:'e.g. I want to hire nurses so I need healthcare approval, or I plan to open a Dubai office later, or I have a criminal record question...'},
   ],
   system:`You are a senior UAE business setup consultant with 15 years of experience. You have encyclopedic knowledge of all UAE mainland departments (DED, ADDED, Sharjah DED), all major freezones (DMCC, DIFC, ADGM, Meydan, Ajman Freezone, RAK ICC, IFZA, Dubai Internet City, Dubai Media City, Dubai South, Sharjah Media City, RAKEZ) and their 2026 costs, rules, and advantages.
 
@@ -616,6 +625,15 @@ Be highly specific with real numbers. Never say "varies" without giving a range.
      o:['Less than 1 year','1–2 years','2–5 years','5–10 years','Permanently if possible','Not sure yet']},
     {k:'family', l:'Will you be bringing family members?', t:'opts',
      o:['No — just me','Yes — spouse only','Yes — spouse and children','Yes — parents too','Yes — full family']},
+    {k:'nationality', l:'What is your nationality?', t:'text', p:'e.g. British, Indian, Pakistani, American, Filipino...'},
+    {k:'current_visa', l:'What is your current visa status in UAE?', t:'opts',
+     o:['Not in UAE yet','Currently on visit/tourist visa','Currently on employment visa','Currently on investor visa','Visa expired / overstayed','UAE citizen or GCC national']},
+    {k:'health', l:'Do you have any health conditions that may affect your medical fitness test?', t:'opts',
+     o:['No — I am in good health','Yes — minor condition, managed','Yes — serious condition','Not sure']},
+    {k:'criminal', l:'Any prior visa rejections or legal issues in UAE or other countries?', t:'opts',
+     o:['No — clean record','Yes — previous UAE visa rejection','Yes — legal issue in another country','Prefer not to say']},
+    {k:'urgency', l:'How urgently do you need the visa?', t:'opts',
+     o:['Urgent — within 2 weeks','Within 1 month','Within 3 months','No rush — just planning ahead']},
   ],
   system:`You are a UAE immigration expert and licensed PRO consultant with deep knowledge of every UAE visa category as of 2026. You know the exact eligibility criteria, documents required, costs, processing times, and success rates for all visa types.
 
@@ -678,6 +696,15 @@ Cite UAE law and specific regulations where relevant. Be precise about numbers �
      p:'e.g. AED 22,000 basic + AED 5,000 housing + AED 1,500 transport. Or type "No offer yet" or "Currently earning AED X"'},
     {k:'goal', l:'What is your negotiation goal?', t:'opts',
      o:['Assess if my current offer is fair','Counter a specific offer I received','Ask for a raise at my current job','Compare two offers I have','Just want to know my market value']},
+    {k:'nationality', l:'What is your nationality?', t:'text', p:'e.g. British, Indian, Pakistani, American...'},
+    {k:'education', l:'What is your highest qualification?', t:'opts',
+     o:["Bachelor's degree","Master's degree / MBA","PhD / Doctorate","Professional cert (CPA, CFA, PMP, etc.)","High school / diploma","No formal qualification"]},
+    {k:'company_type', l:'What type of company is the role with?', t:'opts',
+     o:['Multinational corporation (MNC)','Large UAE conglomerate (e.g. Emaar, Etisalat)','Government / semi-government entity','Mid-size regional company','Small startup or SME','Family business']},
+    {k:'benefits', l:'What benefits are included in the offer (if any)?', t:'text',
+     p:'e.g. Medical insurance, annual flights, school allowance, company car, bonus... or type None'},
+    {k:'competing', l:'Do you have any competing offers or leverage?', t:'opts',
+     o:['Yes — I have another offer','Yes — I am currently employed and happy','No — this is my only option','My current employer may counter-offer']},
   ],
   system:`You are a UAE salary expert, executive recruiter, and career coach who has placed thousands of candidates across all UAE industries. You have real-time knowledge of UAE salary benchmarks in 2026 across all major industries, job levels, and emirates.
 
@@ -750,6 +777,16 @@ Always give specific AED numbers. Never say "it depends" without giving the rang
      p:'e.g. "Landlord can increase rent by 20% with 30 days notice" or "Tenant responsible for all maintenance costs including structural repairs" or describe the full situation...'},
     {k:'extras', l:'Any other terms or issues you want us to check?', t:'text',
      p:'e.g. No pets clause, subletting restrictions, early termination penalty, service charges...'},
+    {k:'furnished', l:'Is the property furnished, semi-furnished, or unfurnished?', t:'opts',
+     o:['Fully furnished','Semi-furnished','Unfurnished']},
+    {k:'ejari', l:'Has the landlord mentioned Ejari registration?', t:'opts',
+     o:["Yes — they'll register it","Yes — they want me to register it","No — not mentioned","Not sure what Ejari is"]},
+    {k:'agent', l:'Is a real estate agent involved? Are they asking for agency fees?', t:'opts',
+     o:['No agent — dealing direct with landlord','Yes — agent fee already agreed','Yes — agent asking for more than 2%','Not sure']},
+    {k:'move_date', l:'When are you planning to move in?', t:'opts',
+     o:['Immediately / within 1 week','Within 1 month','1–3 months from now','Just researching']},
+    {k:'prev_issues', l:'Have you had any issues with this landlord or property before?', t:'ta',
+     p:'Describe any prior disputes, maintenance issues, or anything the landlord said verbally that is not in the contract...'},
   ],
   system:`You are a UAE tenancy law expert and RERA-registered property consultant with 12 years of experience in Dubai, Abu Dhabi, and UAE property law. You know Dubai Law No. 26 of 2007, Law No. 33 of 2008, RERA regulations, Abu Dhabi tenancy law, and the UAE Civil Transactions Law in detail.
 
@@ -803,6 +840,101 @@ If things go wrong: RERA dispute centre, rental dispute settlement centre, DLD �
 Be specific about laws and penalties. Cite actual article numbers where possible.`
 },
 {
+  id:'website', icon:'🌐', name:'Business Website Builder',
+  desc:'Describe your business and get a complete, professional, interactive website built for you — with full code, customisation guide, and step-by-step deployment instructions.',
+  price:'AED 20', oldPrice:'AED 35', gumroad:'https://uaeassist.gumroad.com/l/uhtmg', tags:['Website','HTML','Design','Deployment','Custom'],
+  questions:[
+    {k:'biz_name', l:'What is your business name?', t:'text', p:'e.g. Al Noor Trading, Desert Rose Spa, TechHub Solutions...'},
+    {k:'biz_type', l:'What type of business is this website for?', t:'opts',
+     o:['Consulting / Professional Services','Restaurant / Café / Food','Retail / E-commerce shop','Healthcare / Clinic','Real Estate','Beauty / Salon / Spa','Tech / Software / App','Education / Tutoring','Construction / Contracting','Creative / Photography / Design','Logistics / Delivery','Other — I will describe']},
+    {k:'purpose', l:'What is the main goal of your website?', t:'opts',
+     o:['Get customers to call or WhatsApp me','Showcase my services / portfolio','Sell products online','Book appointments','Build brand credibility','All of the above']},
+    {k:'pages', l:'Which pages do you need?', t:'opts',
+     o:['Home only (one-page site)','Home + About + Contact','Home + Services + Contact','Home + Services + Portfolio + Contact','Full site: Home, About, Services, Portfolio, Blog, Contact','I am not sure — recommend for me']},
+    {k:'style', l:'What visual style do you want?', t:'opts',
+     o:['Luxury / Gold & Dark (premium feel)','Clean & Modern (white, minimal)','Bold & Colourful (energetic, vibrant)','Professional & Corporate (blue, formal)','Warm & Friendly (orange, approachable)','UAE / Arabic inspired design']},
+    {k:'colours', l:'Any specific brand colours or logo details?', t:'text',
+     p:'e.g. "Our logo is blue and white" or "I want gold and dark navy" or "No preference — choose for me"'},
+    {k:'content', l:'Tell me about your business — services, unique selling points, location, contact details:', t:'ta',
+     p:'e.g. We are a cleaning company in Dubai offering home and office cleaning. Our prices start from AED 150. We serve Dubai Marina, JBR and Downtown. WhatsApp: 050-XXX-XXXX. We are fast, reliable and fully insured.'},
+    {k:'features', l:'What special features do you want?', t:'opts',
+     o:['WhatsApp chat button','Google Maps embed','Photo gallery / portfolio','Booking / appointment form','Testimonials / reviews section','Pricing table','All of the above']},
+    {k:'language', l:'What language(s) should the website be in?', t:'opts',
+     o:['English only','Arabic only','Both English and Arabic','English with some Arabic phrases']},
+    {k:'extra', l:'Anything else you want on the website? Any competitors or sites you like the look of?', t:'ta',
+     p:'e.g. "I like the style of emiratesnbd.com" or "I want a countdown timer for a launch" or "No idea, surprise me"'},
+  ],
+  system:`You are a world-class web designer and developer specialising in UAE business websites. You build stunning, modern, fully responsive single-file HTML websites with embedded CSS and JavaScript.
+
+The user wants a complete, professional business website. You must output:
+
+## 🎨 DESIGN OVERVIEW
+Briefly describe the design choices you made and why they suit their business.
+
+## 💻 COMPLETE WEBSITE CODE
+Output the FULL, COMPLETE, working HTML file between these exact markers:
+[WEBSITE_CODE_START]
+<!DOCTYPE html>
+... (complete code here)
+[WEBSITE_CODE_END]
+
+Requirements for the website:
+- Single HTML file with all CSS and JS embedded (no external files needed)
+- Fully responsive (works perfectly on mobile AND desktop)
+- Smooth scroll animations using Intersection Observer
+- Sticky navigation with mobile hamburger menu
+- Hero section with animated gradient background
+- All sections the user requested
+- WhatsApp button if requested (use their number or placeholder)
+- Google Maps embed if requested
+- Photo gallery with lightbox if requested
+- Contact form with validation
+- Smooth hover effects and micro-animations
+- Fast loading — no heavy libraries unless CDN links
+- Professional typography using Google Fonts
+- UAE phone number format in contact details
+- Modern 2026 design trends (glassmorphism, gradients, subtle animations)
+- All text in the language(s) requested
+
+Make the website genuinely beautiful and professional. Use the business name, services, and details they provided throughout the site. Write REAL content, not placeholder text.
+
+## 📋 YOUR CUSTOMISATION GUIDE
+After the code, list 10 easy customisations the user can make:
+1. How to change the business name
+2. How to change colours
+3. How to add/change photos
+4. How to update phone/WhatsApp number
+5. How to change services listed
+6. How to update prices
+7. How to add Google Maps location
+8. How to change fonts
+9. How to add/remove sections
+10. How to update social media links
+
+## 🚀 HOW TO DEPLOY YOUR WEBSITE (Step by Step)
+
+### Option A — Vercel (Free, Recommended)
+1. Go to github.com → Sign up free
+2. Click "New Repository" → name it your-business-name → Public → Create
+3. Click "Add file" → "Upload files" → Upload your index.html → Commit
+4. Go to vercel.com → Sign up with GitHub
+5. Click "New Project" → Import your repository → Deploy
+6. Your website is live at yourname.vercel.app in 60 seconds ✅
+
+### Option B — Netlify (Free Alternative)
+1. Go to netlify.com → Sign up free
+2. Drag and drop your HTML file onto the Netlify dashboard
+3. Your website goes live instantly with a free URL ✅
+
+### Option C — Custom Domain
+1. Buy domain at namecheap.com (~$12/year) or get .ae at ae.registry.ae (~$30/year)
+2. In Vercel/Netlify → Settings → Domains → Add your domain
+3. Follow the DNS instructions (takes 24 hours to activate)
+
+## 💡 NEXT STEPS TO GET CUSTOMERS
+List 5 specific marketing actions for their type of business in UAE.`
+},
+{
   id:'legal', icon:'⚖️', name:'Legal Letter Generator',
   desc:'Describe your UAE legal situation and receive a professionally drafted, law-referenced formal letter ready to send — employment disputes, landlord issues, unpaid money and more.',
   price:'AED 19', oldPrice:'AED 30', gumroad:'https://uaeassist.gumroad.com/l/ycaupk', tags:['Formal Letter','UAE Law','Disputes','MOHRE','RERA'],
@@ -817,6 +949,14 @@ Be specific about laws and penalties. Cite actual article numbers where possible
     {k:'outcome', l:'What exact outcome do you want from this letter?', t:'text', p:'e.g. Full refund of AED 8,000 deposit within 7 days, reinstatement to position, payment of 3 months gratuity...'},
     {k:'urgency', l:'How urgent is this situation?', t:'opts',
      o:['Critical — legal deadline approaching','Urgent — need resolution within 1–2 weeks','Normal — within 1 month','Low — exploring options']},
+    {k:'evidence', l:'What evidence or documentation do you have?', t:'ta',
+     p:'e.g. Employment contract, salary slips, WhatsApp messages, emails, bank statements, photos, lease agreement... List everything you have.'},
+    {k:'attempts', l:'Have you already tried to resolve this?', t:'ta',
+     p:'e.g. I called HR 3 times, sent WhatsApp messages on 5th March, they replied saying... Describe all prior attempts.'},
+    {k:'nationality', l:'Your nationality and Emirates ID status?', t:'text',
+     p:'e.g. Indian national, valid Emirates ID. Or: Pakistani, visa expired last month...'},
+    {k:'legal_help', l:'Are you working with a lawyer or PRO service?', t:'opts',
+     o:['No — handling this myself','Considering hiring a lawyer','Already have a lawyer','Used a PRO service before','Cannot afford a lawyer']},
   ],
   system:`You are a senior UAE legal professional and letter-writing expert with expertise in UAE Labour Law (Federal Decree-Law No. 33 of 2021), Dubai Tenancy Law No. 26 of 2007, UAE Civil Transactions Law, DIFC and ADGM regulations, and UAE Commercial Law.
 
@@ -989,6 +1129,7 @@ const VALID_CODES = {
   'SAL-LAUNCH-X9K2': 'salary',
   'RNT-LAUNCH-X9K2': 'rental',
   'LGL-LAUNCH-X9K2': 'legal',
+  'WEB-LAUNCH-X9K2': 'website',
 };
 
 function verifyCode(toolId) {
@@ -1124,7 +1265,7 @@ async function callAI(userMsg, isFirst=false) {
         body: JSON.stringify({
           model: 'llama-3.3-70b-versatile',
           messages: messages,
-          max_tokens: 2000,
+          max_tokens: 3000,
           temperature: 0.7,
           top_p: 0.9
         })
@@ -1144,7 +1285,12 @@ async function callAI(userMsg, isFirst=false) {
       const data = await res.json();
       const reply = data.choices?.[0]?.message?.content || 'Unable to generate response.';
       chatHistory.push({role:'assistant', content:reply});
-      if (isFirst) reportContent = reply;
+      // Always update report — full conversation summary after follow-ups
+      if (isFirst) {
+        reportContent = reply;
+      } else {
+        reportContent = reply; // Latest AI reply always becomes downloadable report
+      }
       showAIMsg(reply, isFirst);
       return; // success
 
@@ -1177,16 +1323,29 @@ function showAIMsg(text, isFirst) {
   if (inp) { inp.disabled=false; inp.focus(); }
   if (btn) btn.disabled = false;
 
-  if (isFirst) {
-    const rc = document.getElementById('reportBtnContainer');
-    if (rc) rc.innerHTML = `
-      <button class="report-btn" onclick="downloadReport()">
-        <span class="report-btn-icon">📄</span>
-        <div class="report-btn-text">
-          <strong>Download Full Report as PDF</strong>
-          <span>Save your complete personalised analysis as a professional PDF document</span>
-        </div>
-      </button>`;
+  // Always show/update download button after every AI reply
+  const rc = document.getElementById('reportBtnContainer');
+  if (rc) {
+    const isWebsite = currentTool && currentTool.id === 'website';
+    const hasWebCode = isWebsite && text.includes('[WEBSITE_CODE_START]');
+    rc.innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px">
+        ${hasWebCode ? `
+        <button class="report-btn" onclick="downloadWebsiteCode()" style="background:rgba(74,158,255,.12);border-color:rgba(74,158,255,.35)">
+          <span class="report-btn-icon">🌐</span>
+          <div class="report-btn-text">
+            <strong style="color:#4A9EFF">⬇ Download Your Website File</strong>
+            <span>Save the complete HTML website — ready to upload and go live</span>
+          </div>
+        </button>` : ''}
+        <button class="report-btn" onclick="downloadReport()">
+          <span class="report-btn-icon">📄</span>
+          <div class="report-btn-text">
+            <strong>⬇ Download ${isFirst ? 'Full Report' : 'Updated Report'}</strong>
+            <span>${isFirst ? 'Complete analysis with deployment guide — opens in any browser' : 'Report updated with your follow-up — click to download'}</span>
+          </div>
+        </button>
+      </div>`;
   }
 }
 
@@ -1242,6 +1401,31 @@ async function sendFollowUp() {
   inp.focus();
 }
 
+// ─── WEBSITE BUILDER — Extract & Download Code ────────────────────────────────
+function extractAndDownloadWebsite(aiText) {
+  const start = aiText.indexOf('[WEBSITE_CODE_START]');
+  const end = aiText.indexOf('[WEBSITE_CODE_END]');
+  if (start === -1 || end === -1) return null;
+  return aiText.substring(start + '[WEBSITE_CODE_START]'.length, end).trim();
+}
+
+function downloadWebsiteCode() {
+  const code = extractAndDownloadWebsite(reportContent);
+  if (!code) {
+    alert('Website code not found in report. Please try regenerating.');
+    return;
+  }
+  const blob = new Blob([code], {type:'text/html;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const bizName = answers['biz_name'] || 'my-business';
+  a.download = bizName.replace(/[^a-z0-9]/gi,'-').toLowerCase() + '-website.html';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(()=>{URL.revokeObjectURL(url);a.remove();}, 1000);
+}
+
 // ─── PDF REPORT ───────────────────────────────────────────────────────────────
 function downloadReport() {
   const d = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
@@ -1280,7 +1464,7 @@ function downloadReport() {
 </style></head><body>
 <div class="cover">
   <div class="cover-flag"><span></span><span></span><span></span><span></span></div>
-  <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#EDD98A;margin-bottom:12px">UAE ASSIST · POWERED BY GEMINI AI</div>
+  <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#EDD98A;margin-bottom:12px">UAE ASSIST · AI EXPERT REPORT</div>
   <h1>${toolName}</h1>
   <h2>Expert AI Analysis — Your Personalised Results</h2>
   <div class="cover-meta">
@@ -1303,10 +1487,15 @@ function downloadReport() {
 
 </html>`;
 
-  const w = window.open('','_blank');
-  w.document.write(html);
-  w.document.close();
-  setTimeout(()=>w.print(), 600);
+  // True file download — no popup needed
+  const blob = new Blob([html], {type:'text/html;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `UAE-Assist-${currentTool.name.replace(/[^a-z0-9]/gi,'-')}-Report.html`;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(()=>{URL.revokeObjectURL(url);a.remove();}, 1000);
 }
 
 
