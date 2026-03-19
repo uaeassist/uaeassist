@@ -840,6 +840,121 @@ If things go wrong: RERA dispute centre, rental dispute settlement centre, DLD �
 Be specific about laws and penalties. Cite actual article numbers where possible.`
 },
 {
+  id:'calculator', icon:'🧮', name:'Freelancer Income Calculator',
+  desc:'Find out exactly what you take home as a UAE freelancer — after VAT, visa, insurance, zone fees and all hidden costs. Freezone vs Mainland vs Employed comparison included.',
+  price:'AED 8', oldPrice:'AED 15', gumroad:'https://uaeassist.gumroad.com/l/calculator', tags:['Take-Home Pay','VAT','Freezone','Gratuity','Tax Planning'],
+  questions:[
+    {k:'setup', l:'How are you currently set up in UAE?', t:'opts',
+     o:['MOHRE Freelance Permit (no company)','Freezone licence — solo','Freezone licence — with employees','UAE Mainland licence','Currently employed — considering going freelance','Not in UAE yet — planning ahead']},
+    {k:'income', l:'What is your average monthly income (before any deductions)?', t:'text',
+     p:'e.g. AED 18,000 or AED 25,000. If variable, give your average.'},
+    {k:'currency', l:'In what currency do your clients pay you?', t:'opts',
+     o:['AED (UAE Dirhams) only','USD only','Mixed — AED and USD','EUR','GBP','Mixed currencies']},
+    {k:'zone', l:'Which freezone are you in (or considering)?', t:'opts',
+     o:['Ajman Freezone (AFZA)','IFZA Dubai','Meydan Freezone','Sharjah Media City (Shams)','Dubai Internet City / Media City','RAKEZ','DMCC','DIFC / ADGM','Not in a freezone','Not sure yet']},
+    {k:'visa', l:'Do you sponsor your own visa through your freelance setup?', t:'opts',
+     o:['Yes — visa through my freezone/permit','Yes — but through a family member','No — I have an employment visa','No — I am on a dependant visa','Not in UAE yet']},
+    {k:'insurance', l:'Do you have health insurance? What do you pay monthly?', t:'text',
+     p:'e.g. AED 200/month, or "Company provides it", or "None yet"'},
+    {k:'expenses', l:'What are your main monthly business expenses?', t:'ta',
+     p:'e.g. Office rent AED 2,000, software subscriptions AED 500, phone AED 200, travel AED 300. Or type "None" if minimal.'},
+    {k:'vat', l:'Are you VAT registered? Or concerned about VAT threshold?', t:'opts',
+     o:['Yes — already VAT registered','No — my income is below AED 375,000/year','No — but I am approaching the threshold','Not sure if I need to register','I invoice internationally — unsure about VAT']},
+    {k:'employed_offer', l:'Do you have an employed job offer to compare against? If yes, what is the package?', t:'text',
+     p:'e.g. AED 22,000 basic + AED 5,000 housing + AED 1,500 transport. Or type "No comparison needed"'},
+    {k:'goals', l:'What is your main financial concern or question?', t:'ta',
+     p:'e.g. Is it worth staying freelance or taking the job? Am I paying too much in costs? Should I change freezone? Do I need to register for VAT? How much should I save for renewal?'},
+  ],
+  system:`You are a UAE financial expert, tax consultant, and freelance business advisor with 15 years of experience helping UAE freelancers, contractors, and self-employed professionals understand their true income.
+
+You know all 2026 UAE costs precisely: MOHRE freelance permit fees, every major freezone licence cost and renewal, UAE health insurance requirements, Emirates ID fees, visa costs, VAT thresholds and rules, and gratuity calculations.
+
+Produce a comprehensive, personalised income analysis report:
+
+## 🧮 YOUR REAL MONTHLY TAKE-HOME
+Show a clear line-by-line calculation:
+
+Gross Monthly Income: AED [their figure]
+Less monthly costs:
+- Freezone/Permit licence (monthly equivalent): AED -XXX
+- Residence visa (monthly equivalent): AED -XXX
+- Emirates ID renewal (monthly equivalent): AED -XXX
+- Health insurance: AED -XXX
+- Other expenses they listed: AED -XXX
+────────────────────────────────
+NET MONTHLY TAKE-HOME: AED [result]
+Effective hourly rate (based on 22 working days): AED [result]/hour
+Annual net income: AED [result]
+
+## 📊 YOUR ACTUAL COST BREAKDOWN (Annual)
+Itemise every annual cost in AED with 2026 actual figures:
+- Freezone licence renewal: AED X,XXX
+- Residence visa renewal: AED X,XXX
+- Emirates ID: AED XXX
+- Medical fitness test: AED XXX
+- Health insurance: AED X,XXX
+- TOTAL annual overhead: AED X,XXX
+- Monthly equivalent: AED X,XXX
+
+## 💰 VAT ANALYSIS
+State clearly:
+- Their current annual revenue: AED [figure]
+- UAE VAT mandatory threshold: AED 375,000/year
+- UAE VAT voluntary threshold: AED 187,500/year
+- Do they NEED to register? Yes / No / Approaching threshold
+- If approaching: at what monthly income will they hit threshold?
+- Impact of registering: what changes for them?
+- If already registered: are they charging and filing correctly?
+
+## 🏢 FREEZONE vs MAINLAND vs EMPLOYED COMPARISON
+Create a clear 3-column comparison table:
+
+| | Their Current Setup | Alternative Option | Employed Equivalent |
+|--|--|--|--|
+| Gross income | | | |
+| Annual licence cost | | | |
+| Visa cost | | | |
+| Gratuity entitlement | | | |
+| Net take-home | | | |
+| Verdict | | | |
+
+## 💵 CURRENCY & INVOICING STRATEGY
+Based on their payment currency:
+- Should they invoice in AED or USD or split?
+- Exchange rate impact on their income
+- Best practices for international invoicing in UAE
+- Any tax implications for foreign currency payments
+
+## 📈 GRATUITY ENTITLEMENT
+Calculate based on their setup:
+- Do they qualify for gratuity as a freelancer? (honest answer)
+- If employed: gratuity after 1, 3, 5, 10 years at their basic salary
+- End of service planning advice
+
+## 📅 QUARTERLY FINANCIAL PLAN
+Break down what they should set aside each quarter:
+- Licence renewal reserve
+- Visa renewal reserve
+- Insurance reserve
+- Emergency fund recommendation (months of expenses)
+- VAT payment reserve (if applicable)
+
+## 💡 MONEY-SAVING OPPORTUNITIES
+3-5 specific ways they can reduce their costs based on their exact setup:
+- Cheaper freezone alternatives with similar benefits
+- Insurance optimisation
+- Expense deductions
+- Invoicing optimisations
+
+## ⚠️ RISKS & RED FLAGS
+Any financial risks in their current setup they may not be aware of.
+
+## 📞 YOUR SINGLE MOST IMPORTANT ACTION
+The one financial move they should make this month to improve their situation.
+
+Always use real 2026 UAE figures. Never say "it varies" without giving the range. Be direct with AED amounts. If comparing to a job offer they provided, calculate the exact break-even point and which option puts more money in their pocket long-term.`
+},
+{
   id:'website', icon:'🌐', name:'Business Website Builder',
   desc:'Describe your business and get a complete, professional, interactive website built for you — with full code, customisation guide, and step-by-step deployment instructions.',
   price:'AED 20', oldPrice:'AED 35', gumroad:'https://uaeassist.gumroad.com/l/uhtmg', tags:['Website','HTML','Design','Deployment','Custom'],
@@ -1087,15 +1202,23 @@ TOOLS.forEach(tool => {
       </div>
       <span class="tool-arrow">→</span>
     </div>`;
-  c.onclick = () => openTool(tool);
+  c.onclick = () => tool.id === 'website' ? openComingSoon() : openTool(tool);
 
-  // Add sample preview button
-  const previewBtn = document.createElement('button');
-  previewBtn.className = 'btn btn-outline btn-sm';
-  previewBtn.style.cssText = 'width:100%;margin-top:10px;font-size:11px;opacity:.7';
-  previewBtn.textContent = '👁 See Sample Report';
-  previewBtn.onclick = (e) => { e.stopPropagation(); currentTool = tool; openSample(tool); };
-  c.appendChild(previewBtn);
+  // Add sample preview button (not for website)
+  if (tool.id !== 'website') {
+    const previewBtn = document.createElement('button');
+    previewBtn.className = 'btn btn-outline btn-sm';
+    previewBtn.style.cssText = 'width:100%;margin-top:10px;font-size:11px;opacity:.7';
+    previewBtn.textContent = '👁 See Sample Report';
+    previewBtn.onclick = (e) => { e.stopPropagation(); currentTool = tool; openSample(tool); };
+    c.appendChild(previewBtn);
+  } else {
+    // Coming soon badge on card
+    const csBadge = document.createElement('div');
+    csBadge.style.cssText = 'width:100%;margin-top:10px;text-align:center;font-size:11px;font-weight:700;letter-spacing:.1em;color:#4A9EFF;text-transform:uppercase;opacity:.8;padding:8px;border:1px dashed rgba(74,158,255,.3);border-radius:8px;background:rgba(74,158,255,.05)';
+    csBadge.textContent = '🚀 Coming Soon';
+    c.appendChild(csBadge);
+  }
 
   grid.appendChild(c);
 });
@@ -1163,12 +1286,13 @@ function renderPayGate(tool) {
 // ─── ACCESS CODES ────────────────────────────────────────────────────────────
 // One fixed code per tool — put these in your Gumroad receipt messages
 const VALID_CODES = {
-  'BIZ-LAUNCH-X9K2': 'business',
-  'VIS-LAUNCH-X9K2': 'visa',
-  'SAL-LAUNCH-X9K2': 'salary',
-  'RNT-LAUNCH-X9K2': 'rental',
-  'LGL-LAUNCH-X9K2': 'legal',
-  'WEB-LAUNCH-X9K2': 'website',
+  'BIZ-LAUNCH-X9K2':  'business',
+  'VIS-LAUNCH-X9K2':  'visa',
+  'SAL-LAUNCH-X9K2':  'salary',
+  'RNT-LAUNCH-X9K2':  'rental',
+  'LGL-LAUNCH-X9K2':  'legal',
+  'WEB-LAUNCH-X9K2':  'website',
+  'CALC-LAUNCH-X9K2': 'calculator',
 };
 
 function verifyCode(toolId) {
@@ -1775,10 +1899,78 @@ function openSample(tool) {
   document.body.style.overflow = 'hidden';
 }
 
+// ─── COMING SOON ─────────────────────────────────────────────────────────────
+function openComingSoon() {
+  document.getElementById('comingSoonOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeComingSoon() {
+  document.getElementById('comingSoonOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
 // ─── API MODAL HELPERS ────────────────────────────────────────────────────────
 function closeApiModal(e){ if(e.target===document.getElementById('apiOverlay'))closeApiModalDirect(); }
 </script>
 
+
+<!-- COMING SOON MODAL -->
+<div class="overlay" id="comingSoonOverlay" onclick="closeComingSoon()">
+  <div class="modal" style="max-width:480px;text-align:center;overflow:hidden" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeComingSoon()">✕</button>
+
+    <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:20px">
+      <div style="position:absolute;width:320px;height:320px;background:radial-gradient(circle,rgba(74,158,255,.07),transparent 70%);border-radius:50%;top:-100px;left:50%;transform:translateX(-50%);animation:glow 4s ease-in-out infinite"></div>
+      <div style="position:absolute;width:200px;height:200px;background:radial-gradient(circle,rgba(201,168,76,.05),transparent 70%);border-radius:50%;bottom:-60px;right:-40px;animation:glow 4s ease-in-out infinite;animation-delay:-2s"></div>
+    </div>
+
+    <div style="padding:52px 40px;position:relative">
+
+      <div style="position:relative;display:inline-block;margin-bottom:32px">
+        <div style="position:absolute;inset:-14px;border-radius:50%;border:1px solid rgba(74,158,255,.2);animation:csping 2s ease infinite"></div>
+        <div style="position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(74,158,255,.15);animation:csping 2s ease infinite;animation-delay:.4s"></div>
+        <div style="width:84px;height:84px;border-radius:50%;background:rgba(74,158,255,.08);border:2px solid rgba(74,158,255,.25);display:flex;align-items:center;justify-content:center;font-size:38px">🌐</div>
+      </div>
+
+      <div style="font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#4A9EFF;font-weight:700;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:12px">
+        <span style="width:28px;height:1px;background:#4A9EFF;display:block"></span>
+        Coming Soon
+        <span style="width:28px;height:1px;background:#4A9EFF;display:block"></span>
+      </div>
+
+      <div style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:700;color:var(--white);margin-bottom:14px;line-height:1.05">
+        Business Website<br/>
+        <span style="background:linear-gradient(135deg,#4A9EFF,#7EC8FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Builder</span>
+      </div>
+
+      <p style="font-size:14px;line-height:1.8;color:rgba(245,240,232,.5);max-width:320px;margin:0 auto 32px">
+        We are building something incredible. An AI-powered website builder that creates stunning, professional business websites — ready to launch in minutes.
+      </p>
+
+      <div style="background:rgba(255,255,255,.05);border-radius:50px;height:6px;margin-bottom:10px;overflow:hidden">
+        <div style="width:72%;height:100%;background:linear-gradient(90deg,#4A9EFF,#7EC8FF);border-radius:50px;animation:csprogress 2s ease-in-out infinite"></div>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:36px">72% complete — launching very soon</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:36px;text-align:left">
+        <div style="background:rgba(74,158,255,.06);border:1px solid rgba(74,158,255,.12);border-radius:8px;padding:11px 14px;font-size:12px;color:rgba(245,240,232,.7)">⚡ Instant generation</div>
+        <div style="background:rgba(74,158,255,.06);border:1px solid rgba(74,158,255,.12);border-radius:8px;padding:11px 14px;font-size:12px;color:rgba(245,240,232,.7)">🎨 Custom design</div>
+        <div style="background:rgba(74,158,255,.06);border:1px solid rgba(74,158,255,.12);border-radius:8px;padding:11px 14px;font-size:12px;color:rgba(245,240,232,.7)">📱 Mobile ready</div>
+        <div style="background:rgba(74,158,255,.06);border:1px solid rgba(74,158,255,.12);border-radius:8px;padding:11px 14px;font-size:12px;color:rgba(245,240,232,.7)">🚀 One-click deploy</div>
+        <div style="background:rgba(74,158,255,.06);border:1px solid rgba(74,158,255,.12);border-radius:8px;padding:11px 14px;font-size:12px;color:rgba(245,240,232,.7)">💬 WhatsApp button</div>
+        <div style="background:rgba(74,158,255,.06);border:1px solid rgba(74,158,255,.12);border-radius:8px;padding:11px 14px;font-size:12px;color:rgba(245,240,232,.7)">🇦🇪 UAE optimised</div>
+      </div>
+
+      <button class="btn btn-gold" onclick="closeComingSoon()" style="width:100%;padding:16px;font-size:14px">Got It — Close</button>
+
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes csping { 0%{transform:scale(1);opacity:.6} 100%{transform:scale(1.6);opacity:0} }
+@keyframes csprogress { 0%,100%{opacity:1} 50%{opacity:.5} }
+</style>
 
 <script>
 // ── PARTICLE CANVAS ──────────────────────────────────────────────────────────
