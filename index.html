@@ -463,47 +463,9 @@ footer strong{color:var(--white)}
 
 <script>
 // ─── STATE ────────────────────────────────────────────────────────────────────
-// ─── ROTATING API KEYS (Groq) ─────────────────────────────────────────────────
-// Add all your Groq keys here. Site auto-rotates when one hits its limit.
-// Get free keys at console.groq.com — no credit card needed.
-const GROQ_KEYS = [
-  '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', // Key 1
-  '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', // Key 2
-  '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', // Key 3
-  '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', // Key 4
-  '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', // Key 5
-];
-
-// Track which keys are exhausted today
-const KEY_STATUS = JSON.parse(localStorage.getItem('groq_key_status') || '{}');
-const TODAY = new Date().toDateString();
-
-// Reset exhausted keys daily
-if (KEY_STATUS.date !== TODAY) {
-  Object.keys(KEY_STATUS).forEach(k => { if(k !== 'date') delete KEY_STATUS[k]; });
-  KEY_STATUS.date = TODAY;
-  localStorage.setItem('groq_key_status', JSON.stringify(KEY_STATUS));
-}
-
-let currentKeyIndex = 0;
-
-function getActiveKey() {
-  // Find first non-exhausted key
-  for (let i = 0; i < GROQ_KEYS.length; i++) {
-    const idx = (currentKeyIndex + i) % GROQ_KEYS.length;
-    if (!KEY_STATUS[idx]) return { key: GROQ_KEYS[idx], idx };
-  }
-  return null; // All keys exhausted
-}
-
-function markKeyExhausted(idx) {
-  KEY_STATUS[idx] = true;
-  localStorage.setItem('groq_key_status', JSON.stringify(KEY_STATUS));
-  currentKeyIndex = (idx + 1) % GROQ_KEYS.length;
-  console.log(`Key ${idx+1} exhausted, rotating to key ${currentKeyIndex+1}`);
-}
-
-let API_KEY = GROQ_KEYS[0]; // kept for compatibility
+// ─── SECURE API — Keys stored server-side in Vercel env vars ─────────────────
+// No API keys in this file. All AI calls go through /api/chat (Vercel function).
+const API_ENDPOINT = '/api/chat';
 let currentTool = null, answers = {}, currentQ = 0;
 let chatHistory = [], toolSystemPrompt = '';
 let reportContent = '';
@@ -1403,73 +1365,38 @@ function renderChat() {
 async function callAI(userMsg, isFirst=false) {
   chatHistory.push({role:'user', content:userMsg});
 
-  // Build messages with system prompt
   const messages = [
     {role:'system', content: toolSystemPrompt},
     ...chatHistory
   ];
 
-  // Try keys with auto-rotation
-  let lastError = '';
-  for (let attempt = 0; attempt < GROQ_KEYS.length; attempt++) {
-    const keyInfo = getActiveKey();
-    if (!keyInfo) {
-      showError('All API keys have reached their daily limit. Service resets at midnight. Please try again tomorrow.');
-      return;
+  const isWebsite = currentTool && currentTool.id === 'website';
+
+  try {
+    const res = await fetch(API_ENDPOINT, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        messages,
+        model: isWebsite ? 'deepseek-r1-distill-llama-70b' : 'llama-3.3-70b-versatile',
+        max_tokens: isWebsite ? 8000 : 3000
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || `Server error ${res.status}`);
     }
 
-    try {
-      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${keyInfo.key}`
-        },
-        body: JSON.stringify({
-          model: currentTool && currentTool.id === 'website'
-            ? 'deepseek-r1-distill-llama-70b'
-            : 'llama-3.3-70b-versatile',
-          messages: messages,
-          max_tokens: currentTool && currentTool.id === 'website' ? 8000 : 3000,
-          temperature: 0.7,
-          top_p: 0.9
-        })
-      });
+    const data = await res.json();
+    const reply = data.choices?.[0]?.message?.content || 'Unable to generate response.';
+    chatHistory.push({role:'assistant', content:reply});
+    reportContent = reply;
+    showAIMsg(reply, isFirst);
 
-      if (res.status === 429) {
-        // Rate limited — mark key exhausted and rotate
-        markKeyExhausted(keyInfo.idx);
-        continue; // try next key
-      }
-
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error?.message || `HTTP ${res.status}`);
-      }
-
-      const data = await res.json();
-      const reply = data.choices?.[0]?.message?.content || 'Unable to generate response.';
-      chatHistory.push({role:'assistant', content:reply});
-      // Always update report — full conversation summary after follow-ups
-      if (isFirst) {
-        reportContent = reply;
-      } else {
-        reportContent = reply; // Latest AI reply always becomes downloadable report
-      }
-      showAIMsg(reply, isFirst);
-      return; // success
-
-    } catch(e) {
-      lastError = e.message;
-      if (e.message.includes('401') || e.message.includes('invalid_api_key')) {
-        markKeyExhausted(keyInfo.idx);
-        continue;
-      }
-      break; // non-quota error, don't retry
-    }
+  } catch(e) {
+    showError(e.message);
   }
-
-  showError(lastError || 'Connection failed. Please check your internet and try again.');
 }
 
 function showAIMsg(text, isFirst) {
