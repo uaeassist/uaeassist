@@ -386,7 +386,7 @@ footer strong{color:var(--white)}
     <div style="text-align:center"><div class="stat-n">5</div><div class="stat-l">Expert AI Tools</div></div>
     <div style="text-align:center"><div class="stat-n">24/7</div><div class="stat-l">Always Available</div></div>
     <div style="text-align:center"><div class="stat-n">PDF</div><div class="stat-l">Downloadable Reports</div></div>
-    <div style="text-align:center"><div class="stat-n">AED 6</div><div class="stat-l">Starting Price</div></div>
+    <div style="text-align:center"><div class="stat-n">AED 10</div><div class="stat-l">Starting Price</div></div>
     <div style="text-align:center"><div class="stat-n">2026</div><div class="stat-l">Up-to-date Data</div></div>
   </div>
 </section>
@@ -447,7 +447,7 @@ footer strong{color:var(--white)}
 
 <footer>
   <p>🇦🇪 <strong>UAE Assist</strong> — Expert AI Tools for Life in the UAE<br/>
-  <a href="#">Privacy Policy</a> · <a href="#">Terms of Service</a> · <a href="mailto:hello@uaeassist.com">Contact</a><br/>
+  <a href="#">Privacy Policy</a> · <a href="#">Terms of Service</a> · <a href="/cdn-cgi/l/email-protection#8ae2efe6e6e5caffebefebf9f9e3f9fea4e9e5e7">Contact</a><br/>
   <span style="font-size:11px">Not legal or financial advice. Always verify with qualified UAE professionals and official government sources (ica.gov.ae · mohre.gov.ae · rta.ae · rera.gov.ae)</span></p>
 </footer>
 
@@ -461,7 +461,7 @@ footer strong{color:var(--white)}
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ─── STATE ────────────────────────────────────────────────────────────────────
 // ─── SECURE API — Keys stored server-side in Vercel env vars ─────────────────
 // No API keys in this file. All AI calls go through /api/chat (Vercel function).
@@ -500,6 +500,185 @@ function grantAccess(toolId) {
 
 // ─── TOOLS DATA ───────────────────────────────────────────────────────────────
 const TOOLS = [
+{
+  id:'travelban', icon:'🚨', name:'Travel Ban Analyser',
+  desc:'Worried you have a UAE travel ban? Get a full personalised analysis — debt, bounced cheque, absconding, overstay — with exact steps to check and resolve it fast.',
+  price:'AED 15', oldPrice:'AED 25', gumroad:'https://uaeassist.gumroad.com/l/travelban', tags:['Travel Ban','Debt','Bounced Cheque','Absconding','GDRFA'],
+  questions:[
+    {k:'reason', l:'Why do you think you might have a travel ban?', t:'opts',
+     o:['Unpaid bank loan or credit card','Bounced cheque issued to someone','Absconding case filed by employer','Visa overstay fines','Unpaid rent — landlord filed case','Court or civil dispute','Not sure — just want to check','Multiple reasons']},
+    {k:'amount', l:'If debt or cheque related — what is the approximate amount?', t:'opts',
+     o:['Under AED 5,000','AED 5,000–10,000','AED 10,000–50,000','AED 50,000–200,000','Over AED 200,000','Not applicable / not sure']},
+    {k:'status', l:'What is your current situation?', t:'opts',
+     o:['Still in UAE — need to travel urgently','Still in UAE — checking before I travel','Already left UAE — trying to return','At the airport — cannot board right now','Not sure']},
+    {k:'employer', l:'Have you left or changed your job recently?', t:'opts',
+     o:['Resigned properly with notice','Left without notice or NOC','Employer cancelled my visa','Was terminated or made redundant','No — still employed','Not applicable']},
+    {k:'checked', l:'Have you already checked your ban status?', t:'opts',
+     o:['Yes — confirmed I have a ban','Checked online — no ban found but still worried','No — do not know how to check','Told at airport or border crossing']},
+    {k:'nationality', l:'What is your nationality and current visa status?', t:'text',
+     p:'e.g. Indian national, employment visa. Or: Pakistani, visa cancelled 2 months ago.'},
+    {k:'details', l:'Describe your full situation in as much detail as possible:', t:'ta',
+     p:'Include: what happened, amounts owed, dates, who may have filed a case, what you have tried so far. More detail = better analysis.'},
+  ],
+  system:`You are a UAE legal expert specialising in travel bans, immigration law, debt resolution, and labour disputes with 15 years experience helping UAE expats. You know every type of UAE travel ban, every government portal, and every legal pathway to resolution in 2026.
+
+## 🚨 SITUATION ASSESSMENT
+Assess based on their answers:
+- Likelihood of having a travel ban: HIGH RISK / MEDIUM RISK / LOW RISK / UNLIKELY
+- Most likely ban TYPE: Civil financial / Criminal / Immigration / Labour absconding
+- Urgency level: Critical / High / Medium / Low
+- Single most important action to take right now
+
+## 🔍 HOW TO CHECK YOUR BAN RIGHT NOW
+Exact step-by-step for their emirate:
+
+Dubai: Dubai Police app → Criminal Status of Financial Cases → enter Emirates ID. Also: dubaipolice.gov.ae → e-Services → Financial Cases
+Abu Dhabi: ADGDRFA portal adgdrfa.gov.ae → Check Status
+Federal (all UAE): ICP Smart app → icp.gov.ae → Residency Check, AND Ministry of Justice: moj.gov.ae → Case Inquiry
+Labour ban: MOHRE app → mohre.gov.ae → Check Labour Status → enter passport number
+
+## 📋 CAUSE & LEGAL BASIS
+Explain exactly what type of ban they likely have:
+Civil financial ban (Federal Decree-Law No. 42 of 2022): requires minimum AED 10,000 debt, court must prove risk of absconding
+Criminal ban: bounced cheques above threshold, criminal complaints — no minimum amount
+Immigration ban: overstay fines, absconding, visa violations — filed through GDRFA/ICP
+Labour ban: absconding report via MOHRE — employer files after 7 consecutive absent days
+
+## 💰 ESTIMATED RESOLUTION COST (AED)
+Give realistic estimates for their specific situation:
+Outstanding debt/fines to settle: AED X
+Legal representation (if needed): AED X–X
+Court fees: AED X
+Government processing fees: AED X
+TOTAL ESTIMATED COST: AED X
+
+## 📅 STEP-BY-STEP RESOLUTION PLAN
+Numbered action plan for their exact situation type:
+Debt/cheque ban: contact creditor, negotiate settlement, pay in execution court, case marked resolved → ban auto-lifts within hours
+Absconding: contact MOHRE, negotiate with employer or challenge via MOHRE portal, pay fines
+Overstay ban: pay fines at GDRFA (Al Jafiliya Dubai or ADGDRFA Abu Dhabi), get exit permit
+Criminal case: hire UAE criminal lawyer, attend prosecution hearing, obtain clearance certificate
+
+## ⏱️ REALISTIC TIMELINE
+How long will it take? Honest step-by-step timeframes.
+
+## ⚠️ CRITICAL WARNINGS
+Do NOT attempt to leave without resolving — guaranteed detention at airport.
+Do NOT ignore — fines and interest accumulate daily.
+Do NOT rely on friends or unofficial PROs without verification.
+
+## 🆘 KEY CONTACTS
+GDRFA Dubai: 04-313-9999 | gdrfad.gov.ae
+ICP (Federal): 600-522222 | icp.gov.ae
+MOHRE: 800-60 | mohre.gov.ae
+Dubai Courts: 04-334-4444
+Amer Centres (typing/applications): amer.gov.ae
+
+## 📞 YOUR NEXT 24 HOURS
+The one most important action they must take today.
+
+Cite specific UAE decree numbers. Give real AED amounts. People in this situation are terrified — be direct and clear.`
+},
+{
+  id:'overstay', icon:'⏰', name:'Overstay Fine Calculator',
+  desc:'Overstayed your UAE visa? Get your exact fine amount, understand your legal options, and receive a clear exit or status-change plan — including absconding and amnesty checks.',
+  price:'AED 10', oldPrice:'AED 18', gumroad:'https://uaeassist.gumroad.com/l/overstay', tags:['Overstay','Visa Fines','Exit Plan','Amnesty','Absconding'],
+  questions:[
+    {k:'visa_type', l:'What type of visa did you overstay?', t:'opts',
+     o:['Tourist / Visit visa (30 or 60 day)','Employment / Work visa','Residence visa (family or self-sponsored)','Student visa','Freelance permit','Visa was cancelled by employer','Not sure of visa type']},
+    {k:'duration', l:'How long have you been overstaying?', t:'opts',
+     o:['Less than 1 week','1–4 weeks','1–3 months','3–6 months','6–12 months','1–2 years','Over 2 years','Not sure of exact duration']},
+    {k:'location', l:'Where are you right now?', t:'opts',
+     o:['Still in UAE — want to leave','Still in UAE — want to stay legally','Already left UAE — want to return','At the airport right now']},
+    {k:'absconding', l:'Has your employer filed an absconding case?', t:'opts',
+     o:['Yes — confirmed case was filed','I think so — left without notice','No — resigned properly','No — was terminated / made redundant','Self-employed / freelancer','Not sure']},
+    {k:'goal', l:'What do you want to happen?', t:'opts',
+     o:['Exit UAE and go home','Exit UAE and come back later on new visa','Stay in UAE legally — have a job offer','Stay in UAE legally — no job yet','Not sure — want to know all options']},
+    {k:'nationality', l:'What is your nationality?', t:'text',
+     p:'e.g. Indian, Pakistani, Filipino, British, Egyptian... (different rules apply by nationality)'},
+    {k:'passport', l:'Do you have a valid passport?', t:'opts',
+     o:['Yes — passport is fully valid','Passport expired but being renewed','Lost passport — reported to embassy','No valid travel document']},
+    {k:'situation', l:'Describe your full situation:', t:'ta',
+     p:'Include: why you overstayed, any fines already paid, any cases against you, your employment situation, what you want to do next.'},
+  ],
+  system:`You are a UAE immigration expert and PRO consultant with 15 years of experience helping overstayers resolve their situations legally. You know every UAE visa rule, fine structure, grace period, and amnesty programme as of 2026.
+
+## 📊 YOUR EXACT FINE CALCULATION
+Calculate their specific fines:
+
+TOURIST/VISIT VISA (no grace period since 2023):
+AED 50 per day from day 1 of overstay
+Exit processing fee: AED 200–300
+Formula: [days] × AED 50 + AED 250 = TOTAL
+
+RESIDENCE VISA after cancellation:
+30-day grace period: AED 0
+After grace period: AED 25/day
+Formula: ([days] - 30) × AED 25 + AED 250 = TOTAL
+
+Show exact calculation with their timeline:
+Estimated days overstayed: [X]
+Daily fine rate: AED [X]/day
+Total fines: AED [X]
+Exit fee: AED 250
+GRAND TOTAL ESTIMATED: AED [X]
+
+Note: If overstay under 30 days, can pay at airport. Over 30 days must pay at GDRFA office first.
+
+## 🚨 ABSCONDING CHECK
+Do they likely have an absconding case?
+How to check: MOHRE app → Check Labour Status → enter passport number
+GDRFA app: check residency and ban status
+Consequences of absconding: travel ban, re-entry ban, difficulty getting future UAE visa
+Resolution: contact MOHRE, negotiate with employer or challenge with evidence, pay fines
+
+## 🛤️ YOUR OPTIONS
+
+Option A — Exit UAE Legally:
+1. If overstay under 30 days: pay at airport when leaving
+2. If over 30 days: pay at GDRFA office first (Al Jafiliya, Dubai or ADGDRFA, Abu Dhabi)
+3. Get exit permit (AED 200-300)
+4. Leave UAE
+Timeline: 1-3 days | Total cost: fines + fees
+
+Option B — Change Visa Status (If staying):
+Requirements: valid job offer + employer willing to sponsor
+Process: employer files entry permit → status change processed → medical test → Emirates ID
+Some cases require brief exit trip first (check with typing centre)
+Timeline: 2-6 weeks | Cost: AED 3,000-7,000 total including fines
+
+Option C — Check Amnesty:
+Check: ica.gov.ae → search Amnesty Programme
+Periodic amnesty allows: exit without fines, status change without exit
+No permanent amnesty — check official channels only
+
+## 📄 DOCUMENTS NEEDED
+List exact documents for their chosen path with their specific situation.
+
+## ⚠️ WHAT HAPPENS IF YOU WAIT
+Fines increase AED 25-50 every single day.
+Risk of random police check — immediate detention and deportation.
+Re-entry ban length increases with overstay duration.
+
+## 🌍 RE-ENTRY BAN ASSESSMENT
+Based on their overstay duration:
+Under 6 months: usually no ban on return
+6-12 months: possible 1-year ban
+Over 1 year: likely 1-3 year ban
+With absconding case: case-by-case, can be permanent until resolved
+
+## 📞 KEY CONTACTS
+GDRFA Dubai: 04-313-9999 | gdrfad.gov.ae | Al Jafiliya, Dubai
+ADGDRFA Abu Dhabi: 800-5522 | adgdrfa.gov.ae
+ICP (Federal): 600-522222 | icp.gov.ae
+MOHRE: 800-60 | mohre.gov.ae
+Amer Centres (typing): amer.gov.ae
+
+## 💡 MONEY-SAVING TIP
+Specific advice to minimise their total costs based on their situation.
+
+Always give real AED numbers. Be direct and empathetic — people in this situation are very scared.`
+},
 {
   id:'business', icon:'🏢', name:'Business Setup Wizard',
   desc:'Get a complete, personalised UAE business setup roadmap. Mainland vs Freezone, best emirate, licence type, real costs, and step-by-step process.',
@@ -1255,6 +1434,8 @@ const VALID_CODES = {
   'LGL-LAUNCH-X9K2':  'legal',
   'WEB-LAUNCH-X9K2':  'website',
   'CALC-LAUNCH-X9K2': 'calculator',
+  'BAN-LAUNCH-X9K2':  'travelban',
+  'OVS-LAUNCH-X9K2':  'overstay',
 };
 
 function verifyCode(toolId) {
@@ -2049,9 +2230,4 @@ document.addEventListener('click', e=>{
 });
 
 // Add ripple keyframe
-const style = document.createElement('style');
-style.textContent = '@keyframes ripple{to{transform:scale(1);opacity:0}}';
-document.head.appendChild(style);
-</script>
-</body>
-</html>
+const style = document.createEl
