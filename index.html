@@ -146,7 +146,8 @@ nav.scrolled{background:rgba(6,14,26,0.92);box-shadow:0 4px 30px rgba(0,0,0,.4)}
   transition:all .35s cubic-bezier(.23,1,.32,1);
   position:relative;overflow:hidden;
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  transform:translateY(40px);opacity:0}
+  transform:translateY(0);opacity:1}
+.tool-card.reveal{transform:translateY(40px);opacity:0}
 .tool-card.visible{transform:translateY(0);opacity:1}
 .tool-card::before{content:'';position:absolute;inset:0;
   background:linear-gradient(135deg,rgba(201,168,76,.06) 0%,transparent 50%);
@@ -322,7 +323,7 @@ nav.scrolled{background:rgba(6,14,26,0.92);box-shadow:0 4px 30px rgba(0,0,0,.4)}
   background:var(--glass);border:1px solid rgba(201,168,76,.07);
   border-radius:16px;padding:28px;text-align:center;
   backdrop-filter:blur(20px);transition:.3s;
-  transform:translateY(30px);opacity:0}
+  transform:translateY(0);opacity:1}
 .trust-card.visible{transform:translateY(0);opacity:1}
 .trust-card:hover{border-color:rgba(201,168,76,.2);transform:translateY(-4px);
   box-shadow:0 16px 40px rgba(0,0,0,.3)}
@@ -503,7 +504,7 @@ const TOOLS = [
 {
   id:'travelban', icon:'🚨', name:'Travel Ban Analyser',
   desc:'Worried you have a UAE travel ban? Get a full personalised analysis — debt, bounced cheque, absconding, overstay — with exact steps to check and resolve it fast.',
-  price:'AED 15', oldPrice:'AED 25', gumroad:'https://uaeassist.gumroad.com/l/hzuxd', tags:['Travel Ban','Debt','Bounced Cheque','Absconding','GDRFA'],
+  price:'AED 15', oldPrice:'AED 25', gumroad:'https://uaeassist.gumroad.com/l/travelban', tags:['Travel Ban','Debt','Bounced Cheque','Absconding','GDRFA'],
   questions:[
     {k:'reason', l:'Why do you think you might have a travel ban?', t:'opts',
      o:['Unpaid bank loan or credit card','Bounced cheque issued to someone','Absconding case filed by employer','Visa overstay fines','Unpaid rent — landlord filed case','Court or civil dispute','Not sure — just want to check','Multiple reasons']},
@@ -582,7 +583,7 @@ Cite specific UAE decree numbers. Give real AED amounts. People in this situatio
 {
   id:'overstay', icon:'⏰', name:'Overstay Fine Calculator',
   desc:'Overstayed your UAE visa? Get your exact fine amount, understand your legal options, and receive a clear exit or status-change plan — including absconding and amnesty checks.',
-  price:'AED 10', oldPrice:'AED 18', gumroad:'https://uaeassist.gumroad.com/l/cobnnb', tags:['Overstay','Visa Fines','Exit Plan','Amnesty','Absconding'],
+  price:'AED 10', oldPrice:'AED 18', gumroad:'https://uaeassist.gumroad.com/l/overstay', tags:['Overstay','Visa Fines','Exit Plan','Amnesty','Absconding'],
   questions:[
     {k:'visa_type', l:'What type of visa did you overstay?', t:'opts',
      o:['Tourist / Visit visa (30 or 60 day)','Employment / Work visa','Residence visa (family or self-sponsored)','Student visa','Freelance permit','Visa was cancelled by employer','Not sure of visa type']},
@@ -1363,6 +1364,8 @@ TOOLS.forEach(tool => {
 
   grid.appendChild(c);
 });
+// Now cards exist — init scroll observer
+if(typeof initObservers === 'function') initObservers();
 
 // ─── TOOL MODAL ───────────────────────────────────────────────────────────────
 function openTool(tool) {
@@ -2164,7 +2167,10 @@ const observer = new IntersectionObserver((entries)=>{
   });
 },{threshold:.1});
 
-document.querySelectorAll('.tool-card,.trust-card').forEach(el=>observer.observe(el));
+// Observer runs after tools are rendered (called from renderTools)
+function initObservers(){
+  document.querySelectorAll('.tool-card,.trust-card').forEach(el=>observer.observe(el));
+}
 
 // ── CARD MOUSE SHINE ──────────────────────────────────────────────────────────
 document.querySelectorAll('.tool-card').forEach(card=>{
